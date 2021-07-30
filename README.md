@@ -11,7 +11,10 @@
 [![Code size](https://img.shields.io/github/languages/code-size/gmpassos/yaml_writer?logo=github&logoColor=white)](https://github.com/gmpassos/yaml_writer)
 [![License](https://img.shields.io/github/license/gmpassos/yaml_writer?logo=open-source-initiative&logoColor=green)](https://github.com/gmpassos/yaml_writer/blob/master/LICENSE)
 
-A library to write YAML documents.
+A library to write YAML documents, supporting Object encoding and [dart:convert][dart_convert] [Converter][dart_converter].
+
+[dart_convert]: https://api.dart.dev/stable/2.13.4/dart-convert/dart-convert-library.html
+[dart_converter]: https://api.dart.dev/stable/2.13.4/dart-convert/Converter-class.html
 
 ## Usage
 
@@ -57,9 +60,11 @@ avoiding to escape `"` and using `|` for multiline texts.
 ## Encoding Objects
 
 You can use `YAMLWriter.toEncodable` to convert an Object to an encodable version,
-similar to what is done by `dart:convert` `JsonEncoder`.
+similar to what is done by [dart:convert][dart_convert] [JsonEncoder][json_encoder].
 
 If `YAMLWriter.toEncodable` is not set, it will try to call `toJson()`.
+
+[json_encoder]: https://api.dart.dev/stable/2.13.4/dart-convert/JsonEncoder-class.html
 
 ## Features and bugs
 
