@@ -2,6 +2,7 @@
 
 [![pub package](https://img.shields.io/pub/v/yaml_writer.svg?logo=dart&logoColor=00b9fc)](https://pub.dartlang.org/packages/yaml_writer)
 [![Null Safety](https://img.shields.io/badge/null-safety-brightgreen)](https://dart.dev/null-safety)
+[![Codecov](https://img.shields.io/codecov/c/github/gmpassos/yaml_writer)](https://app.codecov.io/gh/gmpassos/yaml_writer)
 [![CI](https://img.shields.io/github/workflow/status/gmpassos/yaml_writer/Dart%20CI/master?logo=github-actions&logoColor=white)](https://github.com/gmpassos/yaml_writer/actions)
 [![GitHub Tag](https://img.shields.io/github/v/tag/gmpassos/yaml_writer?logo=git&logoColor=white)](https://github.com/gmpassos/yaml_writer/releases)
 [![New Commits](https://img.shields.io/github/commits-since/gmpassos/yaml_writer/latest?logo=git&logoColor=white)](https://github.com/gmpassos/yaml_writer/network)
