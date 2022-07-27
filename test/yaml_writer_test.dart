@@ -52,6 +52,39 @@ void main() {
       expect(yamlWriter.convert(tree), equals(yaml));
     });
 
+    test('empty list', () {
+      var yamlWriter = YAMLWriter();
+
+      var tree = {
+        'emptyList': [],
+        'objectWithEmptyList': {
+          'emptyList': [],
+        },
+        'nestedList': [
+          [],
+          [5],
+        ],
+        'someValue': 5,
+      };
+
+      var yaml = yamlWriter.write(tree);
+
+      print(yaml);
+
+      expect(yaml, equals(r'''
+emptyList: []
+objectWithEmptyList: 
+  emptyList: []
+nestedList: 
+  - []
+  - 
+    - 5
+someValue: 5
+'''));
+
+      expect(yamlWriter.convert(tree), equals(yaml));
+    });
+
     test('map', () {
       var yamlWriter = YAMLWriter();
 

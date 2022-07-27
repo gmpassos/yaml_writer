@@ -108,6 +108,10 @@ class YAMLWriter extends Converter<Object?, String> {
   }
 
   bool _writeList(Iterable node, StringBuffer s, {String currentIdent = ''}) {
+    if (node.isEmpty) {
+      s.write('[]');
+      return false;
+    }
     if (s.isNotEmpty) {
       s.write('\n');
     }
