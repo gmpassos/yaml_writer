@@ -6,7 +6,13 @@ class YAMLWriter extends Converter<Object?, String> {
 
   final String _ident;
 
-  YAMLWriter({this.identSize = 2}) : _ident = ''.padLeft(identSize, ' ');
+  /// If true, add single quotes to string values
+  final bool addQuotes;
+
+  YAMLWriter({
+    this.identSize = 2,
+    this.addQuotes = true,
+  }) : _ident = ''.padLeft(identSize, ' ');
 
   /// Used to convert objects to an encodable version.
   Object? Function(dynamic object)? toEncodable;
@@ -85,9 +91,9 @@ class YAMLWriter extends Converter<Object?, String> {
       return true;
     } else {
       if (!node.contains("'")) {
-        s.write("'");
+        if (addQuotes) s.write("'");
         s.write(node);
-        s.write("'");
+        if (addQuotes) s.write("'");
         return false;
       } else {
         var str = node.replaceAll('\\', '\\\\').replaceAll('"', '\\"');
