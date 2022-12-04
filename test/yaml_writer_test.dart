@@ -96,6 +96,9 @@ foo:
       // ignore: deprecated_member_use_from_same_package
       var yamlWriter = YAMLWriter(identSize: 3);
 
+      // ignore: deprecated_member_use_from_same_package
+      expect(yamlWriter.identSize, equals(yamlWriter.indentSize));
+
       var tree = {
         'foo': {
           's1': 'Some string',
