@@ -1,3 +1,14 @@
+## 1.0.3
+
+- `YAMLWriter`:
+  - Added `allowUnquotedStrings`.
+  - Rename `identSize` to `indentSize`.
+  - Deprecate `identSize` field.
+- lints: ^2.0.1
+- test: ^1.22.0
+- dependency_validator: ^3.2.2
+- coverage: ^1.6.1
+
 ## 1.0.2
 
 - Fixed serialization of an empty `List` to `[]`

@@ -7,6 +7,111 @@ void main() {
       print('---------------------------------------------');
     });
 
+    test('unquoted string', () {
+      var yamlWriter = YAMLWriter(allowUnquotedStrings: true);
+
+      var tree = {
+        'foo': {
+          's1': 'Unquoted string with some@email and a /path/file.',
+          's2': 'Quoted \$string.',
+          's3': '@Quoted string.',
+          's4': '-Quoted string.',
+          's5': 'UnQuoted@string.',
+          's6': 'UnQuoted-string.',
+        }
+      };
+
+      var yaml = yamlWriter.write(tree);
+
+      print(yaml);
+
+      expect(yaml, equals(r'''
+foo: 
+  s1: Unquoted string with some@email and a /path/file.
+  s2: 'Quoted $string.'
+  s3: '@Quoted string.'
+  s4: '-Quoted string.'
+  s5: UnQuoted@string.
+  s6: UnQuoted-string.
+'''));
+
+      expect(yamlWriter.convert(tree), equals(yaml));
+
+      var yamlWriterQuoted = YAMLWriter(allowUnquotedStrings: false);
+
+      var yaml2 = yamlWriterQuoted.write(tree);
+
+      print(yaml2);
+
+      expect(yaml2, equals(r'''
+foo: 
+  s1: 'Unquoted string with some@email and a /path/file.'
+  s2: 'Quoted $string.'
+  s3: '@Quoted string.'
+  s4: '-Quoted string.'
+  s5: 'UnQuoted@string.'
+  s6: 'UnQuoted-string.'
+'''));
+    });
+
+    test('indent 1', () {
+      var yamlWriter = YAMLWriter(indentSize: 1);
+
+      var tree = {
+        'foo': {
+          's1': 'Some string',
+        }
+      };
+
+      var yaml = yamlWriter.write(tree);
+
+      print(yaml);
+
+      expect(yaml, equals(r'''
+foo: 
+ s1: 'Some string'
+'''));
+    });
+
+    test('indent 5', () {
+      var yamlWriter = YAMLWriter(indentSize: 5);
+
+      var tree = {
+        'foo': {
+          's1': 'Some string',
+        }
+      };
+
+      var yaml = yamlWriter.write(tree);
+
+      print(yaml);
+
+      expect(yaml, equals(r'''
+foo: 
+     s1: 'Some string'
+'''));
+    });
+
+    test('@deprecated identSize 8', () {
+      // ignore: deprecated_member_use_from_same_package
+      var yamlWriter = YAMLWriter(identSize: 3);
+
+      var tree = {
+        'foo': {
+          's1': 'Some string',
+        }
+      };
+
+      var yaml = yamlWriter.write(tree);
+
+      print(yaml);
+
+      expect(yaml, equals(r'''
+foo: 
+   s1: 'Some string'
+'''));
+    });
+
     test('list', () {
       var yamlWriter = YAMLWriter();
 

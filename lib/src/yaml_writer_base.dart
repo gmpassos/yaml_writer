@@ -2,11 +2,28 @@ import 'dart:convert';
 
 /// YAML Writer.
 class YAMLWriter extends Converter<Object?, String> {
-  final int identSize;
+  /// The indentation size.
+  final int indentSize;
+
+  @Deprecated("Use `indentSize`.")
+  int get identSize => indentSize;
+
+  /// If `true` it will allow unquoted strings.
+  final bool allowUnquotedStrings;
 
   final String _ident;
 
-  YAMLWriter({this.identSize = 2}) : _ident = ''.padLeft(identSize, ' ');
+  YAMLWriter(
+      {int indentSize = 2,
+      @Deprecated("Use `indentSize`.") int? identSize,
+      this.allowUnquotedStrings = false})
+      : indentSize = _resolveIndentSize(indentSize, identSize),
+        _ident = ''.padLeft(_resolveIndentSize(indentSize, identSize), ' ');
+
+  static int _resolveIndentSize(int indentSize, int? identSize) {
+    var indent = (identSize ?? indentSize);
+    return indent < 0 ? 0 : indent;
+  }
 
   /// Used to convert objects to an encodable version.
   Object? Function(dynamic object)? toEncodable;
@@ -84,7 +101,14 @@ class YAMLWriter extends Converter<Object?, String> {
 
       return true;
     } else {
-      if (!node.contains("'")) {
+      var containsSingleQuote = node.contains("'");
+
+      if (allowUnquotedStrings &&
+          !containsSingleQuote &&
+          _isValidUnquotedString(node)) {
+        s.write(node);
+        return false;
+      } else if (!containsSingleQuote) {
         s.write("'");
         s.write(node);
         s.write("'");
@@ -98,6 +122,14 @@ class YAMLWriter extends Converter<Object?, String> {
       }
     }
   }
+
+  static final _regexpInvalidUnquotedChars = RegExp(
+      r'[^0-9a-zA-ZàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ@/. \t-]');
+
+  bool _isValidUnquotedString(String s) =>
+      !_regexpInvalidUnquotedChars.hasMatch(s) &&
+      !s.startsWith('@') &&
+      !s.startsWith('-');
 
   static dynamic _defaultToEncodable(dynamic object) => object.toJson();
 
