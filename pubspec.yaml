@@ -1,10 +1,10 @@
 name: yaml_writer
 description: A library to write YAML documents, supporting Object encoding and 'dart:convert' 'Converter'.
-version: 1.0.3
+version: 1.1.0
 homepage: https://github.com/gmpassos/yaml_writer
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: ">=3.0.0 <4.0.0"
 
 dev_dependencies:
   lints: ^2.0.1

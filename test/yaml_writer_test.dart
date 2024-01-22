@@ -8,7 +8,7 @@ void main() {
     });
 
     test('unquoted string', () {
-      var yamlWriter = YAMLWriter(allowUnquotedStrings: true);
+      var yamlWriter = YamlWriter(allowUnquotedStrings: true);
 
       var tree = {
         'foo': {
@@ -37,7 +37,7 @@ foo:
 
       expect(yamlWriter.convert(tree), equals(yaml));
 
-      var yamlWriterQuoted = YAMLWriter(allowUnquotedStrings: false);
+      var yamlWriterQuoted = YamlWriter(allowUnquotedStrings: false);
 
       var yaml2 = yamlWriterQuoted.write(tree);
 
@@ -55,11 +55,14 @@ foo:
     });
 
     test('indent 1', () {
-      var yamlWriter = YAMLWriter(indentSize: 1);
+      var yamlWriter = YamlWriter(indentSize: 1);
 
       var tree = {
         'foo': {
           's1': 'Some string',
+          'bar': {
+            's2': 'Another string',
+          }
         }
       };
 
@@ -70,11 +73,13 @@ foo:
       expect(yaml, equals(r'''
 foo: 
  s1: 'Some string'
+ bar: 
+  s2: 'Another string'
 '''));
     });
 
     test('indent 5', () {
-      var yamlWriter = YAMLWriter(indentSize: 5);
+      var yamlWriter = YamlWriter(indentSize: 5);
 
       var tree = {
         'foo': {
@@ -92,31 +97,8 @@ foo:
 '''));
     });
 
-    test('@deprecated identSize 8', () {
-      // ignore: deprecated_member_use_from_same_package
-      var yamlWriter = YAMLWriter(identSize: 3);
-
-      // ignore: deprecated_member_use_from_same_package
-      expect(yamlWriter.identSize, equals(yamlWriter.indentSize));
-
-      var tree = {
-        'foo': {
-          's1': 'Some string',
-        }
-      };
-
-      var yaml = yamlWriter.write(tree);
-
-      print(yaml);
-
-      expect(yaml, equals(r'''
-foo: 
-   s1: 'Some string'
-'''));
-    });
-
     test('list', () {
-      var yamlWriter = YAMLWriter();
+      var yamlWriter = YamlWriter();
 
       var tree = [
         1,
@@ -147,13 +129,13 @@ foo:
 - "it's"
 - "\"mixed\"'s"
 - |-
-    l1
-    l2
+  l1
+  l2
 - false
 - |
-    l1
-    l2
-    l3
+  l1
+  l2
+  l3
 - 'end'
 '''));
 
@@ -161,7 +143,7 @@ foo:
     });
 
     test('empty list', () {
-      var yamlWriter = YAMLWriter();
+      var yamlWriter = YamlWriter();
 
       var tree = {
         'emptyList': [],
@@ -185,8 +167,7 @@ objectWithEmptyList:
   emptyList: []
 nestedList: 
   - []
-  - 
-    - 5
+  - - 5
 someValue: 5
 '''));
 
@@ -194,7 +175,7 @@ someValue: 5
     });
 
     test('map', () {
-      var yamlWriter = YAMLWriter();
+      var yamlWriter = YamlWriter();
 
       var yaml = yamlWriter.write({
         'a': 1,
@@ -208,6 +189,7 @@ someValue: 5
         'i': false,
         'j': 'l1\nl2\nl3\n',
         'k': 'end',
+        'l': {}
       });
 
       print(yaml);
@@ -221,19 +203,20 @@ e: '"quote"'
 f: "it's"
 g: "\"mixed\"'s"
 h: |-
-    l1
-    l2
+  l1
+  l2
 i: false
 j: |
-    l1
-    l2
-    l3
+  l1
+  l2
+  l3
 k: 'end'
+l: {}
 '''));
     });
 
     test('mixed', () {
-      var yamlWriter = YAMLWriter();
+      var yamlWriter = YamlWriter();
 
       var yaml = yamlWriter.write({
         'a': [1, 2, 3],
@@ -246,6 +229,11 @@ k: 'end'
         ],
         'f': ['l1\nl2\nl3', 'l10\nl20\n'],
         'g': {'f1': 'l1\nl2\nl3', 'f2': 'l10\nl20\n'},
+        'h': {},
+        'i': {
+          "x": {},
+          "y": [1, 2, 3]
+        }
       });
 
       print(yaml);
@@ -265,37 +253,39 @@ d:
   x: 1
   y: 2
 e: 
-  - 
-    id: 1
+  - id: 1
     n: 10
-  - 
-    id: 2
+  - id: 2
     n: 20
-
 f: 
   - |-
-      l1
-      l2
-      l3
+    l1
+    l2
+    l3
   - |
-      l10
-      l20
-
+    l10
+    l20
 g: 
   f1: |-
-      l1
-      l2
-      l3
+    l1
+    l2
+    l3
   f2: |
-      l10
-      l20
-
+    l10
+    l20
+h: {}
+i: 
+  x: {}
+  y: 
+    - 1
+    - 2
+    - 3
 '''));
     });
   });
 
   test('object', () {
-    var yamlWriter = YAMLWriter();
+    var yamlWriter = YamlWriter();
 
     var tree = {
       'type': '_Foo',
@@ -313,9 +303,11 @@ obj:
   name: 'Joe'
 '''));
 
-    yamlWriter.toEncodable = (o) => o.name;
+    var yamlWriter2 = YamlWriter(
+      toEncodable: (o) => o.name,
+    );
 
-    var yaml2 = yamlWriter.write(tree);
+    var yaml2 = yamlWriter2.write(tree);
 
     print(yaml2);
 

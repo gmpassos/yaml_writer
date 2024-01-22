@@ -1,32 +1,34 @@
 import 'dart:convert';
+import 'dart:math';
+
+import 'package:yaml_writer/src/node.dart';
+
+@Deprecated('Use YamlWriter.')
+typedef YAMLWriter = YamlWriter;
 
 /// YAML Writer.
-class YAMLWriter extends Converter<Object?, String> {
-  /// The indentation size.
-  final int indentSize;
+class YamlWriter extends Converter<Object?, String> {
+  static dynamic _defaultToEncodable(dynamic object) => object.toJson();
 
-  @Deprecated("Use `indentSize`.")
-  int get identSize => indentSize;
+  /// The indentation size.
+  ///
+  /// Must be greater or equal to `1`.
+  ///
+  /// Defaults to `2`.
+  final int indentSize;
 
   /// If `true` it will allow unquoted strings.
   final bool allowUnquotedStrings;
 
-  final String _ident;
-
-  YAMLWriter(
-      {int indentSize = 2,
-      @Deprecated("Use `indentSize`.") int? identSize,
-      this.allowUnquotedStrings = false})
-      : indentSize = _resolveIndentSize(indentSize, identSize),
-        _ident = ''.padLeft(_resolveIndentSize(indentSize, identSize), ' ');
-
-  static int _resolveIndentSize(int indentSize, int? identSize) {
-    var indent = (identSize ?? indentSize);
-    return indent < 0 ? 0 : indent;
-  }
-
   /// Used to convert objects to an encodable version.
-  Object? Function(dynamic object)? toEncodable;
+  final Object? Function(dynamic object) toEncodable;
+
+  YamlWriter({
+    int indentSize = 2,
+    this.allowUnquotedStrings = false,
+    Object? Function(dynamic object)? toEncodable,
+  })  : indentSize = max(1, indentSize),
+        toEncodable = toEncodable ?? _defaultToEncodable;
 
   /// Converts [input] to an YAML document as [String].
   ///
@@ -36,91 +38,84 @@ class YAMLWriter extends Converter<Object?, String> {
   @override
   String convert(Object? input) => write(input);
 
-  /// Writes [node] to an YAML document as [String].
-  String write(Object? node) {
-    var s = StringBuffer();
-    _writeTo(node, s);
-    return s.toString();
+  /// Writes [object] to an YAML document as [String].
+  String write(Object? object) {
+    final node = _parseNode(object);
+    final yaml = _nodeToYaml(node);
+    return '${yaml.join('\n')}\n';
   }
 
-  bool _writeTo(Object? node, StringBuffer s, {String currentIdent = ''}) {
-    if (node == null) {
-      return _writeNull(s);
-    } else if (node is num) {
-      _writeNum(node, s);
-      return false;
-    } else if (node is bool) {
-      _writeBool(node, s);
-      return false;
-    } else if (node is List) {
-      return _writeList(node, s, currentIdent: currentIdent);
-    } else if (node is Map) {
-      return _writeMap(node, s, currentIdent: currentIdent);
-    } else if (node is String) {
-      return _writeString(node, s, currentIdent: currentIdent);
+  Node _parseNode(Object? object) {
+    if (object == null) {
+      return NullNode();
+    } else if (object is num) {
+      return NumNode(object);
+    } else if (object is bool) {
+      return BoolNode(object);
+    } else if (object is String) {
+      return StringNode(object);
+    } else if (object is List) {
+      return ListNode(object.map(_parseNode).toList());
+    } else if (object is Map) {
+      return MapNode(object.map((k, v) => MapEntry(k, _parseNode(v))));
     } else {
-      return _writeObject(node, s, currentIdent: currentIdent);
+      return _parseNode(toEncodable(object));
     }
   }
 
-  bool _writeNull(StringBuffer s) {
-    s.write('null');
-    return false;
+  List<String> _nodeToYaml(Node node) {
+    switch (node) {
+      case NullNode():
+        return ['null'];
+      case NumNode():
+        return ['${node.number}'];
+      case BoolNode():
+        return ['${node.boolean}'];
+      case StringNode():
+        return _stringNodeToYaml(node);
+      case ListNode():
+        return _listNodeToYaml(node);
+      case MapNode():
+        return _mapNodeToYaml(node);
+    }
   }
 
-  bool _writeNum(num node, StringBuffer s) {
-    s.write(node);
-    return false;
-  }
+  List<String> _stringNodeToYaml(StringNode node) {
+    final text = node.text;
 
-  bool _writeBool(bool node, StringBuffer s) {
-    s.write(node);
-    return false;
-  }
+    List<String> yamlLines = [];
 
-  bool _writeString(String node, StringBuffer s, {String currentIdent = ''}) {
-    if (node.contains('\n')) {
-      var nextIdent = currentIdent + _ident;
-
-      var endsWithLineBreak = node.endsWith('\n');
+    if (text.contains('\n')) {
+      bool endsWithLineBreak = text.endsWith('\n');
 
       List<String> lines;
       if (endsWithLineBreak) {
-        s.write('|\n');
-        lines = node.substring(0, node.length - 1).split('\n');
+        yamlLines.add('|');
+        lines = text.substring(0, text.length - 1).split('\n');
       } else {
-        s.write('|-\n');
-        lines = node.split('\n');
+        yamlLines.add('|-');
+        lines = text.split('\n');
       }
 
-      for (var line in lines) {
-        s.write(nextIdent);
-        s.write(line);
-        s.write('\n');
+      for (int index = 0; index < lines.length; index++) {
+        yamlLines.add(lines[index]);
       }
-
-      return true;
     } else {
-      var containsSingleQuote = node.contains("'");
+      var containsSingleQuote = text.contains("'");
 
       if (allowUnquotedStrings &&
           !containsSingleQuote &&
-          _isValidUnquotedString(node)) {
-        s.write(node);
-        return false;
+          _isValidUnquotedString(text)) {
+        yamlLines.add(text);
       } else if (!containsSingleQuote) {
-        s.write("'");
-        s.write(node);
-        s.write("'");
-        return false;
+        yamlLines.add('\'$text\'');
       } else {
-        var str = node.replaceAll('\\', '\\\\').replaceAll('"', '\\"');
-        s.write('"');
-        s.write(str);
-        s.write('"');
-        return false;
+        var str = text.replaceAll('\\', '\\\\').replaceAll('"', '\\"');
+        yamlLines.add('"$str"');
       }
     }
+
+    return yamlLines;
   }
 
   static final _regexpInvalidUnquotedChars = RegExp(
@@ -131,60 +126,56 @@ class YAMLWriter extends Converter<Object?, String> {
       !s.startsWith('@') &&
       !s.startsWith('-');
 
-  static dynamic _defaultToEncodable(dynamic object) => object.toJson();
-
-  bool _writeObject(Object node, StringBuffer s, {String currentIdent = ''}) {
-    var toEncodable = this.toEncodable ?? _defaultToEncodable;
-    var o = toEncodable(node);
-    return _writeTo(o, s, currentIdent: currentIdent);
-  }
-
-  bool _writeList(Iterable node, StringBuffer s, {String currentIdent = ''}) {
-    if (node.isEmpty) {
-      s.write('[]');
-      return false;
-    }
-    if (s.isNotEmpty) {
-      s.write('\n');
+  List<String> _listNodeToYaml(ListNode node) {
+    if (node.subnodes.isEmpty) {
+      return ['[]'];
     }
 
-    var nextIdent = currentIdent + _ident;
+    final List<String> lines = [];
 
-    var wroteLineBreak = false;
+    for (final node in node.subnodes) {
+      final nodeYaml = _nodeToYaml(node);
 
-    for (var item in node) {
-      s.write(currentIdent);
-      s.write('- ');
-      var ln = _writeTo(item, s, currentIdent: nextIdent);
-      if (!ln) {
-        s.write('\n');
-        wroteLineBreak = true;
+      final firstIndent = "-${' ' * max(1, indentSize - 1)}";
+      final subsequentIndent = ' ' * firstIndent.length;
+
+      lines.add("$firstIndent${nodeYaml.first}");
+      for (int i = 1; i < nodeYaml.length; i++) {
+        lines.add("$subsequentIndent${nodeYaml[i]}");
       }
     }
 
-    return wroteLineBreak;
+    return lines;
   }
 
-  bool _writeMap(Map node, StringBuffer s, {String currentIdent = ''}) {
-    if (s.isNotEmpty) {
-      s.write('\n');
+  List<String> _mapNodeToYaml(MapNode node) {
+    if (node.subnodesMap.isEmpty) {
+      return ['{}'];
     }
 
-    var nextIdent = currentIdent + _ident;
+    final List<String> lines = [];
 
-    var wroteLineBreak = false;
+    for (final entry in node.subnodesMap.entries) {
+      final key = entry.key;
+      final node = entry.value;
 
-    for (var entry in node.entries) {
-      s.write(currentIdent);
-      s.write(entry.key);
-      s.write(': ');
-      var ln = _writeTo(entry.value, s, currentIdent: nextIdent);
-      if (!ln) {
-        s.write('\n');
-        wroteLineBreak = true;
+      final nodeYaml = _nodeToYaml(node);
+
+      final indent = ' ' * indentSize;
+
+      if (node.requiresNewLine) {
+        lines.add("$key: ");
+        for (final line in nodeYaml) {
+          lines.add("$indent$line");
+        }
+      } else {
+        lines.add("$key: ${nodeYaml.first}");
+        for (int i = 1; i < nodeYaml.length; i++) {
+          lines.add("$indent${nodeYaml[i]}");
+        }
       }
     }
 
-    return wroteLineBreak;
+    return lines;
   }
 }
