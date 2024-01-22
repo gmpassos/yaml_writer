@@ -1,3 +1,33 @@
+## 2.0.0
+
+- Internals are reworked: now package is relying on a tree-like structure to improve maintainability and scalability.
+- Fixed `indentSize` validation (only values >=1 are allowed).
+- Resolved https://github.com/gmpassos/yaml_writer/issues/6:
+```yaml
+# BEFORE:
+field:
+  - 
+    - 5
+    - 2
+  - 
+    a: 3
+    b: 6
+
+# AFTER:
+field:
+  - - 5
+    - 2
+  - a: 3
+    b: 6
+```
+- Update min Dart SDK version constraint from `2.12.0` to `3.0.0`
+
+BREAKING CHANGES:
+- `YAMLWriter` renamed to `YamlWriter` ([Effective Dart reference](https://dart.dev/effective-dart/style#do-capitalize-acronyms-and-abbreviations-longer-than-two-letters-like-words)).
+- Deprecated `identSize` property is removed. Use `indentSize` instead.
+- `toEncodable` property is removed. Use constructor parameter instead (`YamlWriter#toEncodable`).
+
+
 ## 1.0.3
 
 - `YAMLWriter`:
