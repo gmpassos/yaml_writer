@@ -21,6 +21,7 @@ field:
     b: 6
 ```
 - Update min Dart SDK version constraint from `2.12.0` to `3.0.0`
+- Update `lints: ^2.0.1` to `lints: ^3.0.0`
 
 BREAKING CHANGES:
 - `YAMLWriter` renamed to `YamlWriter` ([Effective Dart reference](https://dart.dev/effective-dart/style#do-capitalize-acronyms-and-abbreviations-longer-than-two-letters-like-words)).
