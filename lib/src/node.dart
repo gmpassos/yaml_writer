@@ -139,7 +139,7 @@ class MapNode extends Node {
       final indent = ' ' * context.indentSize;
 
       if (node.requiresNewLine) {
-        lines.add("$key: ");
+        lines.add("$key:");
         for (final line in nodeYaml) {
           lines.add("$indent$line");
         }
