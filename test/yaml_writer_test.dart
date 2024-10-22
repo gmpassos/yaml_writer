@@ -26,7 +26,7 @@ void main() {
       print(yaml);
 
       expect(yaml, equals(r'''
-foo: 
+foo:
   s1: Unquoted string with some@email and a /path/file.
   s2: 'Quoted $string.'
   s3: '@Quoted string.'
@@ -44,7 +44,7 @@ foo:
       print(yaml2);
 
       expect(yaml2, equals(r'''
-foo: 
+foo:
   s1: 'Unquoted string with some@email and a /path/file.'
   s2: 'Quoted $string.'
   s3: '@Quoted string.'
@@ -71,9 +71,9 @@ foo:
       print(yaml);
 
       expect(yaml, equals(r'''
-foo: 
+foo:
  s1: 'Some string'
- bar: 
+ bar:
   s2: 'Another string'
 '''));
     });
@@ -92,7 +92,7 @@ foo:
       print(yaml);
 
       expect(yaml, equals(r'''
-foo: 
+foo:
      s1: 'Some string'
 '''));
     });
@@ -163,9 +163,9 @@ foo:
 
       expect(yaml, equals(r'''
 emptyList: []
-objectWithEmptyList: 
+objectWithEmptyList:
   emptyList: []
-nestedList: 
+nestedList:
   - []
   - - 5
 someValue: 5
@@ -239,25 +239,25 @@ l: {}
       print(yaml);
 
       expect(yaml, equals('''
-a: 
+a:
   - 1
   - 2
   - 3
-b: 
+b:
   - 10.2
   - 30.4
-c: 
+c:
   ok: true
   error: false
-d: 
+d:
   x: 1
   y: 2
-e: 
+e:
   - id: 1
     n: 10
   - id: 2
     n: 20
-f: 
+f:
   - |-
     l1
     l2
@@ -265,7 +265,7 @@ f:
   - |
     l10
     l20
-g: 
+g:
   f1: |-
     l1
     l2
@@ -274,9 +274,9 @@ g:
     l10
     l20
 h: {}
-i: 
+i:
   x: {}
-  y: 
+  y:
     - 1
     - 2
     - 3
@@ -298,7 +298,7 @@ i:
 
     expect(yaml, equals(r'''
 type: '_Foo'
-obj: 
+obj:
   id: 123
   name: 'Joe'
 '''));
