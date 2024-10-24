@@ -1,3 +1,10 @@
+## 2.0.1
+
+- Remove unnecessary trailing spaces from keys with values declared on a new line.
+
+- test: ^1.25.8
+- coverage: ^1.10.0
+
 ## 2.0.0
 
 - Internals are reworked: now package is relying on a tree-like structure to improve maintainability and scalability.
