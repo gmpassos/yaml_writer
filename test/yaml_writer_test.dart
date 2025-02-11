@@ -1,4 +1,5 @@
 import 'package:test/test.dart';
+import 'package:yaml_writer/src/config.dart';
 import 'package:yaml_writer/yaml_writer.dart';
 
 void main() {
@@ -8,7 +9,11 @@ void main() {
     });
 
     test('unquoted string', () {
-      var yamlWriter = YamlWriter(allowUnquotedStrings: true);
+      var yamlWriter = YamlWriter(
+        config: YamlWriterConfig(
+          quoteStyle: QuoteStyle.preferUnquoted,
+        ),
+      );
 
       var tree = {
         'foo': {
@@ -37,7 +42,11 @@ foo:
 
       expect(yamlWriter.convert(tree), equals(yaml));
 
-      var yamlWriterQuoted = YamlWriter(allowUnquotedStrings: false);
+      var yamlWriterQuoted = YamlWriter(
+        config: YamlWriterConfig(
+          quoteStyle: QuoteStyle.preferSingleQuote,
+        ),
+      );
 
       var yaml2 = yamlWriterQuoted.write(tree);
 
@@ -55,7 +64,11 @@ foo:
     });
 
     test("empty string", () {
-      final yamlWriter = YamlWriter(allowUnquotedStrings: true);
+      final yamlWriter = YamlWriter(
+        config: YamlWriterConfig(
+          quoteStyle: QuoteStyle.preferSingleQuote,
+        ),
+      );
 
       final tree = {'foo': ""};
 
@@ -69,7 +82,11 @@ foo: ''
     });
 
     test('indent 1', () {
-      var yamlWriter = YamlWriter(indentSize: 1);
+      var yamlWriter = YamlWriter(
+        config: YamlWriterConfig(
+          indentSize: 1,
+        ),
+      );
 
       var tree = {
         'foo': {
@@ -93,7 +110,11 @@ foo:
     });
 
     test('indent 5', () {
-      var yamlWriter = YamlWriter(indentSize: 5);
+      var yamlWriter = YamlWriter(
+        config: YamlWriterConfig(
+          indentSize: 5,
+        ),
+      );
 
       var tree = {
         'foo': {

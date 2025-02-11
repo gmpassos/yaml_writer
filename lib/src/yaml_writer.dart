@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:yaml_writer/src/node.dart';
 
+import 'config.dart';
 import 'yaml_context.dart';
 
 @Deprecated('Use YamlWriter.')
@@ -12,25 +12,15 @@ typedef YAMLWriter = YamlWriter;
 class YamlWriter extends Converter<Object?, String> {
   static dynamic _defaultToEncodable(dynamic object) => object.toJson();
 
-  /// The indentation size.
-  ///
-  /// Must be greater or equal to `1`.
-  ///
-  /// Defaults to `2`.
-  final int indentSize;
-
-  /// If `true` it will allow unquoted strings.
-  final bool allowUnquotedStrings;
+  final YamlWriterConfig config;
 
   /// Used to convert objects to an encodable version.
   final Object? Function(dynamic object) toEncodable;
 
   YamlWriter({
-    int indentSize = 2,
-    this.allowUnquotedStrings = false,
+    this.config = const YamlWriterConfig(),
     Object? Function(dynamic object)? toEncodable,
-  })  : indentSize = max(1, indentSize),
-        toEncodable = toEncodable ?? _defaultToEncodable;
+  }) : toEncodable = toEncodable ?? _defaultToEncodable;
 
   /// Converts [input] to an YAML document as [String].
   ///
@@ -44,8 +34,7 @@ class YamlWriter extends Converter<Object?, String> {
   String write(Object? object) {
     final node = _parseNode(object);
     final context = YamlContext(
-      indentSize: indentSize,
-      allowUnquotedStrings: allowUnquotedStrings,
+      config: config,
     );
     final yaml = node.toYaml(context);
     return '${yaml.join('\n')}\n';

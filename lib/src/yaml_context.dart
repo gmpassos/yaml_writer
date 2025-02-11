@@ -1,10 +1,9 @@
+import 'config.dart';
+
 class YamlContext {
-  final int indentSize;
+  final YamlWriterConfig config;
 
-  final bool allowUnquotedStrings;
-
-  YamlContext({
-    required this.indentSize,
-    required this.allowUnquotedStrings,
+  const YamlContext({
+    required this.config,
   });
 }

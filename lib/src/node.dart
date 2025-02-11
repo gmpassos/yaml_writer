@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'config.dart';
 import 'yaml_context.dart';
 
 sealed class Node {
@@ -59,7 +60,9 @@ class StringNode extends Node {
     } else {
       var containsSingleQuote = text.contains("'");
 
-      if (context.allowUnquotedStrings && !containsSingleQuote && _isValidUnquotedString(text)) {
+      if (context.config.quoteStyle == QuoteStyle.preferUnquoted &&
+          !containsSingleQuote &&
+          _isValidUnquotedString(text)) {
         yamlLines.add(text);
       } else if (!containsSingleQuote) {
         yamlLines.add('\'$text\'');
@@ -72,11 +75,13 @@ class StringNode extends Node {
     return yamlLines;
   }
 
-  static final _regexpInvalidUnquotedChars =
-      RegExp(r'[^0-9a-zA-ZàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ@/. \t-]');
+  static final _regexpInvalidUnquotedChars = RegExp(
+      r'[^0-9a-zA-ZàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ@/. \t-]');
 
   bool _isValidUnquotedString(String s) =>
-      !_regexpInvalidUnquotedChars.hasMatch(s) && !s.startsWith('@') && !s.startsWith('-');
+      !_regexpInvalidUnquotedChars.hasMatch(s) &&
+      !s.startsWith('@') &&
+      !s.startsWith('-');
 }
 
 class ListNode extends Node {
@@ -98,7 +103,7 @@ class ListNode extends Node {
     for (final node in subnodes) {
       final nodeYaml = node.toYaml(context);
 
-      final firstIndent = "-${' ' * max(1, context.indentSize - 1)}";
+      final firstIndent = "-${' ' * max(1, context.config.indentSize - 1)}";
       final subsequentIndent = ' ' * firstIndent.length;
 
       lines.add("$firstIndent${nodeYaml.first}");
@@ -133,7 +138,7 @@ class MapNode extends Node {
 
       final nodeYaml = node.toYaml(context);
 
-      final indent = ' ' * context.indentSize;
+      final indent = ' ' * context.config.indentSize;
 
       if (node.requiresNewLine) {
         lines.add("$key:");
