@@ -41,7 +41,7 @@ class StringNode extends Node {
   List<String> toYaml(YamlContext context) {
     List<String> yamlLines = [];
     if (text.isEmpty) {
-      yamlLines.add("''");
+      yamlLines.add(context.config.emptyStringLiteral.literal);
     } else if (text.contains('\n')) {
       bool endsWithLineBreak = text.endsWith('\n');
 
