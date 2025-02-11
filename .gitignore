@@ -14,3 +14,4 @@ test/.test_cov.dart
 pubspec.lock
 
 .DS_Store
+.idea
