@@ -39,8 +39,9 @@ class StringNode extends Node {
   @override
   List<String> toYaml(YamlContext context) {
     List<String> yamlLines = [];
-
-    if (text.contains('\n')) {
+    if (text.isEmpty) {
+      yamlLines.add("''");
+    } else if (text.contains('\n')) {
       bool endsWithLineBreak = text.endsWith('\n');
 
       List<String> lines;
@@ -58,9 +59,7 @@ class StringNode extends Node {
     } else {
       var containsSingleQuote = text.contains("'");
 
-      if (context.allowUnquotedStrings &&
-          !containsSingleQuote &&
-          _isValidUnquotedString(text)) {
+      if (context.allowUnquotedStrings && !containsSingleQuote && _isValidUnquotedString(text)) {
         yamlLines.add(text);
       } else if (!containsSingleQuote) {
         yamlLines.add('\'$text\'');
@@ -73,13 +72,11 @@ class StringNode extends Node {
     return yamlLines;
   }
 
-  static final _regexpInvalidUnquotedChars = RegExp(
-      r'[^0-9a-zA-ZàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ@/. \t-]');
+  static final _regexpInvalidUnquotedChars =
+      RegExp(r'[^0-9a-zA-ZàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ@/. \t-]');
 
   bool _isValidUnquotedString(String s) =>
-      !_regexpInvalidUnquotedChars.hasMatch(s) &&
-      !s.startsWith('@') &&
-      !s.startsWith('-');
+      !_regexpInvalidUnquotedChars.hasMatch(s) && !s.startsWith('@') && !s.startsWith('-');
 }
 
 class ListNode extends Node {
