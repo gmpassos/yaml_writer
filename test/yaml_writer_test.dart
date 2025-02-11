@@ -54,6 +54,20 @@ foo:
 '''));
     });
 
+    test("empty string", () {
+      final yamlWriter = YamlWriter(allowUnquotedStrings: true);
+
+      final tree = {'foo': ""};
+
+      final yaml = yamlWriter.write(tree);
+
+      print(yaml);
+
+      expect(yaml, equals(r'''
+foo: ''
+'''));
+    });
+
     test('indent 1', () {
       var yamlWriter = YamlWriter(indentSize: 1);
 
