@@ -91,8 +91,10 @@ foo: ''
       );
 
       final tree = {
-        'foo': "123",
-        'bar': 123,
+        'int-to-string': "123",
+        'int': 123,
+        'double-to-string': "0.18",
+        'double': 0.18,
       };
 
       final yaml = yamlWriter.write(tree);
@@ -100,8 +102,10 @@ foo: ''
       print(yaml);
 
       expect(yaml, equals(r'''
-foo: '123'
-bar: 123
+int-to-string: '123'
+int: 123
+double-to-string: '0.18'
+double: 0.18
 '''));
     });
 
