@@ -81,7 +81,7 @@ class StringNode extends Node {
         // if contains double quote, use string quote
         yamlLines.add("'$text'");
       } else {
-        if (!context.config.forceQuotedString && _isValidUnquotedString(text)) {
+        if (!context.config.forceQuotedString && isValidUnquotedString(text)) {
           // if allowUnquotedStrings is true and the string is valid unquoted, use no quote
           yamlLines.add(text);
         } else {
@@ -102,7 +102,7 @@ class StringNode extends Node {
     r'^[:{}\[\]>,&*#?|@-]|^\s+|\s+$|\n|\t|^[0-9]+$|^[0-9]*\.[0-9]+$',
   );
 
-  bool _isValidUnquotedString(String s) => !_invalidCharsRegex.hasMatch(s);
+  bool isValidUnquotedString(String s) => !_invalidCharsRegex.hasMatch(s);
 }
 
 class ListNode extends Node {
