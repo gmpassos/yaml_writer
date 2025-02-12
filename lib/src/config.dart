@@ -32,7 +32,7 @@ class YamlWriterConfig {
 
   const YamlWriterConfig({
     this.indentSize = 2,
-    this.allowUnquotedStrings = false,
+    this.allowUnquotedStrings = true,
     this.quoteStyle = QuoteStyle.preferSingleQuote,
     this.emptyStringLiteral = EmptyStringLiteral.singleQuote,
   });

@@ -76,8 +76,10 @@ class StringNode extends Node {
       } else {
         if (context.config.allowUnquotedStrings &&
             _isValidUnquotedString(text)) {
+          // if allowUnquotedStrings is true and the string is valid unquoted, use no quote
           yamlLines.add(text);
         } else {
+          // otherwise, use the preferred quote style
           if (context.config.quoteStyle == QuoteStyle.preferSingleQuote) {
             yamlLines.add("'$text'");
           } else {
@@ -90,13 +92,11 @@ class StringNode extends Node {
     return yamlLines;
   }
 
-  static final _regexpInvalidUnquotedChars = RegExp(
-      r'[^0-9a-zA-ZàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ@/. \t-]');
+  static final _invalidCharsRegex = RegExp(
+    r'^[:{}\[\]>,&*#?|@-]|^\s+|\s+$|\n|\t',
+  );
 
-  bool _isValidUnquotedString(String s) =>
-      !_regexpInvalidUnquotedChars.hasMatch(s) &&
-      !s.startsWith('@') &&
-      !s.startsWith('-');
+  bool _isValidUnquotedString(String s) => !_invalidCharsRegex.hasMatch(s);
 }
 
 class ListNode extends Node {
