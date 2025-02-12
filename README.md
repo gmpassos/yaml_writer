@@ -75,9 +75,10 @@ Please file feature requests and bugs at the [issue tracker][tracker].
 
 ## Author
 
-Graciliano M. Passos: [gmpassos@GitHub][github].
+Graciliano M. Passos: [gmpassos@GitHub](https://github.com/gmpassos).
 
-[github]: https://github.com/gmpassos
+Liplum: [Github](https://github.com/liplum)
+
 
 ## License
 
