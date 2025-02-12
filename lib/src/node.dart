@@ -102,7 +102,7 @@ class StringNode extends Node {
     r'^[:{}\[\]>,&*#?|@-]|^\s+|\s+$|\n|\t|^[0-9]+$|^[0-9]*\.[0-9]+$',
   );
 
-  bool isValidUnquotedString(String s) => !_invalidCharsRegex.hasMatch(s);
+  static bool isValidUnquotedString(String s) => !_invalidCharsRegex.hasMatch(s);
 }
 
 class ListNode extends Node {
