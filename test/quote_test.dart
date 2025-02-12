@@ -114,5 +114,22 @@ void main() {
       expect(StringNode.isValidUnquotedString("foo # bar"), equals(false));
       expect(StringNode.isValidUnquotedString("foo# bar"), equals(true));
     });
+
+    test("percentage", () {
+      expect(StringNode.isValidUnquotedString("%foo"), equals(false));
+      expect(StringNode.isValidUnquotedString("%"), equals(false));
+      expect(StringNode.isValidUnquotedString("foo%"), equals(true));
+      expect(StringNode.isValidUnquotedString("foo%bar"), equals(true));
+      expect(StringNode.isValidUnquotedString("foo% bar"), equals(true));
+      expect(StringNode.isValidUnquotedString("foo % bar"), equals(true));
+      expect(StringNode.isValidUnquotedString("foo %bar"), equals(true));
+    });
+
+    test("builtin literal", () {
+      expect(StringNode.isValidUnquotedString("null"), equals(false));
+      expect(StringNode.isValidUnquotedString("true"), equals(false));
+      expect(StringNode.isValidUnquotedString("false"), equals(false));
+      expect(StringNode.isValidUnquotedString("~"), equals(false));
+    });
   });
 }

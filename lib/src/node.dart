@@ -98,6 +98,10 @@ class StringNode extends Node {
     return yamlLines;
   }
 
+  static final _invalidCharsRegex = RegExp(
+    r"^(true|false|null|~|\?|:|-)$|^\s+|\s+$|\n|\t|\r|^[{}\[\]>,&*#|@%]|^-?(?:\d+(?:\.\d+)?|\.\d+)$|^(- |\? )|:\s|\s+#",
+  );
+
   /// ## Quoting Rules
   /// ### Numbers
   /// 1. Integer and decimals (including negative) are invalid.
@@ -143,11 +147,15 @@ class StringNode extends Node {
   /// 2. Ending with one or more whitespace is invalid.
   /// 3. Containing \n, \t, \r is invalid.
   ///
-  static final _invalidCharsRegex = RegExp(
-    r"^([?:-])$|^\s+|\s+$|\n|\t|\r|^[{}\[\]>,&*#|@]|^-?(?:\d+(?:\.\d+)?|\.\d+)$|^(- |\? )|:\s|\s+#",
-  );
-
-  static bool isValidUnquotedString(String s) => !_invalidCharsRegex.hasMatch(s);
+  /// ### Percentage
+  /// 1. Starting with percentage is invalid.
+  ///
+  /// ### Builtin Literal
+  /// 1. Only a single tide is invalid.
+  /// 2. `true`, `false`, and `null` are invalid.
+  ///
+  static bool isValidUnquotedString(String s) =>
+      !_invalidCharsRegex.hasMatch(s);
 }
 
 class ListNode extends Node {
