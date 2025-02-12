@@ -24,7 +24,7 @@ A simple usage example:
 import 'package:yaml_writer/yaml_writer.dart';
 
 void main() {
-  final yamlWriter = const YAMLWriter();
+  final yamlWriter = YamlWriter();
 
   final yamlDoc = yamlWriter.write({
     'name': 'Joe',

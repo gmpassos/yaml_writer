@@ -16,7 +16,16 @@ class YamlWriter extends Converter<Object?, String> {
   /// Used to convert objects to an encodable version.
   final Object? Function(dynamic object) toEncodable;
 
-  const YamlWriter({
+  YamlWriter({
+    int indentSize = 2,
+    bool allowUnquotedStrings = false,
+    this.toEncodable = _defaultToEncodable,
+  }) : config = YamlWriterConfig(
+          indentSize: indentSize,
+          forceQuotedString: !allowUnquotedStrings,
+        );
+
+  const YamlWriter.config({
     this.config = const YamlWriterConfig(),
     this.toEncodable = _defaultToEncodable,
   });

@@ -4,7 +4,7 @@ import 'package:yaml_writer/yaml_writer.dart';
 void main() {
   group('YAMLWriter', () {
     test('unquoted string', () {
-      final yamlWriter = const YamlWriter(
+      final yamlWriter = const YamlWriter.config(
         config: YamlWriterConfig(
           forceQuotedString: false,
         ),
@@ -35,7 +35,7 @@ foo:
 
       expect(yamlWriter.convert(tree), equals(yaml));
 
-      final yamlWriterQuoted = const YamlWriter(
+      final yamlWriterQuoted = const YamlWriter.config(
         config: YamlWriterConfig(
           quoteStyle: QuoteStyle.preferSingleQuote,
           forceQuotedString: true,
@@ -56,7 +56,7 @@ foo:
     });
 
     test("empty string", () {
-      final yamlWriter = const YamlWriter(
+      final yamlWriter = const YamlWriter.config(
         config: YamlWriterConfig(
           quoteStyle: QuoteStyle.preferSingleQuote,
           forceQuotedString: true,
@@ -73,7 +73,7 @@ foo: ''
     });
 
     test("numbers in unquoted string", () {
-      final yamlWriter = const YamlWriter(
+      final yamlWriter = const YamlWriter.config(
         config: YamlWriterConfig(
           quoteStyle: QuoteStyle.preferSingleQuote,
         ),
@@ -99,7 +99,7 @@ double: 0.18
     });
 
     test('indent 1', () {
-      final writer1 = const YamlWriter(
+      final writer1 = const YamlWriter.config(
         config: YamlWriterConfig(
           indentSize: 1,
           forceQuotedString: true,
@@ -121,7 +121,7 @@ foo:
   s2: 'Another string'
 '''));
 
-      final writer5 = const YamlWriter(
+      final writer5 = const YamlWriter.config(
         config: YamlWriterConfig(
           indentSize: 5,
           forceQuotedString: true,
@@ -141,7 +141,7 @@ foo:
     });
 
     test('list', () {
-      final yamlWriter = const YamlWriter(
+      final yamlWriter = const YamlWriter.config(
         config: YamlWriterConfig(
           forceQuotedString: true,
         ),
@@ -190,7 +190,7 @@ foo:
     });
 
     test('empty list', () {
-      final yamlWriter = const YamlWriter(
+      final yamlWriter = const YamlWriter.config(
           config: YamlWriterConfig(
         forceQuotedString: true,
       ));
@@ -223,7 +223,7 @@ someValue: 5
     });
 
     test('map', () {
-      final yamlWriter = const YamlWriter(
+      final yamlWriter = const YamlWriter.config(
         config: YamlWriterConfig(
           forceQuotedString: true,
         ),
@@ -266,7 +266,7 @@ l: {}
     });
 
     test('mixed', () {
-      final yamlWriter = const YamlWriter(
+      final yamlWriter = const YamlWriter.config(
         config: YamlWriterConfig(
           forceQuotedString: true,
         ),
@@ -337,7 +337,7 @@ i:
   });
 
   test('object', () {
-    final yamlWriter = const YamlWriter(
+    final yamlWriter = const YamlWriter.config(
       config: YamlWriterConfig(
         forceQuotedString: true,
       ),
@@ -357,7 +357,7 @@ obj:
   name: 'Joe'
 '''));
 
-    final yamlWriter2 = YamlWriter(
+    final yamlWriter2 = YamlWriter.config(
       config: const YamlWriterConfig(
         forceQuotedString: true,
       ),
