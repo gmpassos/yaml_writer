@@ -28,8 +28,6 @@ void main() {
 
       final yaml = yamlWriter.write(tree);
 
-      print(yaml);
-
       expect(yaml, equals(r'''
 foo:
   s1: Unquoted string with some@email and a /path/file.
@@ -50,8 +48,6 @@ foo:
       );
 
       final yaml2 = yamlWriterQuoted.write(tree);
-
-      print(yaml2);
 
       expect(yaml2, equals(r'''
 foo:
@@ -76,8 +72,6 @@ foo:
 
       final yaml = yamlWriter.write(tree);
 
-      print(yaml);
-
       expect(yaml, equals(r'''
 foo: ''
 '''));
@@ -99,8 +93,6 @@ foo: ''
       };
 
       final yaml = yamlWriter.write(tree);
-
-      print(yaml);
 
       expect(yaml, equals(r'''
 int-in-string: '123'
@@ -178,8 +170,6 @@ foo:
 
       final yaml = yamlWriter.write(tree);
 
-      print(yaml);
-
       expect(yaml, equals(r'''
 - 1
 - 10.2
@@ -224,8 +214,6 @@ foo:
 
       final yaml = yamlWriter.write(tree);
 
-      print(yaml);
-
       expect(yaml, equals(r'''
 emptyList: []
 objectWithEmptyList:
@@ -260,8 +248,6 @@ someValue: 5
         'k': 'end',
         'l': {}
       });
-
-      print(yaml);
 
       expect(yaml, equals(r'''
 a: 1
@@ -308,8 +294,6 @@ l: {}
           "y": [1, 2, 3]
         }
       });
-
-      print(yaml);
 
       expect(yaml, equals('''
 a:
@@ -371,8 +355,6 @@ i:
 
     final yaml = yamlWriter.write(tree);
 
-    print(yaml);
-
     expect(yaml, equals(r'''
 type: '_Foo'
 obj:
@@ -388,8 +370,6 @@ obj:
     );
 
     final yaml2 = yamlWriter2.write(tree);
-
-    print(yaml2);
 
     expect(yaml2, equals(r'''
 type: '_Foo'
