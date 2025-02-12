@@ -4,14 +4,10 @@ import 'package:yaml_writer/yaml_writer.dart';
 
 void main() {
   group('YAMLWriter', () {
-    setUp(() {
-      print('---------------------------------------------');
-    });
-
     test('unquoted string', () {
       final yamlWriter = const YamlWriter(
         config: YamlWriterConfig(
-          allowUnquotedStrings: true,
+          forceQuotedString: false,
         ),
       );
 
@@ -43,7 +39,7 @@ foo:
       final yamlWriterQuoted = const YamlWriter(
         config: YamlWriterConfig(
           quoteStyle: QuoteStyle.preferSingleQuote,
-          allowUnquotedStrings: false,
+          forceQuotedString: true,
         ),
       );
 
@@ -64,7 +60,7 @@ foo:
       final yamlWriter = const YamlWriter(
         config: YamlWriterConfig(
           quoteStyle: QuoteStyle.preferSingleQuote,
-          allowUnquotedStrings: false,
+          forceQuotedString: true,
         ),
       );
 
@@ -107,7 +103,7 @@ double: 0.18
       final writer1 = const YamlWriter(
         config: YamlWriterConfig(
           indentSize: 1,
-          allowUnquotedStrings: false,
+          forceQuotedString: true,
         ),
       );
       expect(
@@ -129,7 +125,7 @@ foo:
       final writer5 = const YamlWriter(
         config: YamlWriterConfig(
           indentSize: 5,
-          allowUnquotedStrings: false,
+          forceQuotedString: true,
         ),
       );
 
@@ -148,7 +144,7 @@ foo:
     test('list', () {
       final yamlWriter = const YamlWriter(
         config: YamlWriterConfig(
-          allowUnquotedStrings: false,
+          forceQuotedString: true,
         ),
       );
 
@@ -197,7 +193,7 @@ foo:
     test('empty list', () {
       final yamlWriter = const YamlWriter(
           config: YamlWriterConfig(
-        allowUnquotedStrings: false,
+        forceQuotedString: true,
       ));
 
       final tree = {
@@ -230,7 +226,7 @@ someValue: 5
     test('map', () {
       final yamlWriter = const YamlWriter(
         config: YamlWriterConfig(
-          allowUnquotedStrings: false,
+          forceQuotedString: true,
         ),
       );
 
@@ -273,7 +269,7 @@ l: {}
     test('mixed', () {
       final yamlWriter = const YamlWriter(
         config: YamlWriterConfig(
-          allowUnquotedStrings: false,
+          forceQuotedString: true,
         ),
       );
 
@@ -344,7 +340,7 @@ i:
   test('object', () {
     final yamlWriter = const YamlWriter(
       config: YamlWriterConfig(
-        allowUnquotedStrings: false,
+        forceQuotedString: true,
       ),
     );
 
@@ -364,7 +360,7 @@ obj:
 
     final yamlWriter2 = YamlWriter(
       config: const YamlWriterConfig(
-        allowUnquotedStrings: false,
+        forceQuotedString: true,
       ),
       toEncodable: (o) => o.name,
     );

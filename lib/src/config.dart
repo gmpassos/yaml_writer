@@ -22,17 +22,16 @@ class YamlWriterConfig {
   final int indentSize;
 
   /// If `true` it will allow unquoted strings.
-  ///
   final QuoteStyle quoteStyle;
 
-  /// If `true`, unquoted strings are preferred if it's capable
-  final bool allowUnquotedStrings;
+  /// If `true` it will force quoting of strings.
+  final bool forceQuotedString;
 
   final EmptyStringLiteral emptyStringLiteral;
 
   const YamlWriterConfig({
     this.indentSize = 2,
-    this.allowUnquotedStrings = true,
+    this.forceQuotedString = false,
     this.quoteStyle = QuoteStyle.preferSingleQuote,
     this.emptyStringLiteral = EmptyStringLiteral.singleQuote,
   });

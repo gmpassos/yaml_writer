@@ -74,8 +74,7 @@ class StringNode extends Node {
         // if contains double quote, use string quote
         yamlLines.add("'$text'");
       } else {
-        if (context.config.allowUnquotedStrings &&
-            _isValidUnquotedString(text)) {
+        if (!context.config.forceQuotedString && _isValidUnquotedString(text)) {
           // if allowUnquotedStrings is true and the string is valid unquoted, use no quote
           yamlLines.add(text);
         } else {
