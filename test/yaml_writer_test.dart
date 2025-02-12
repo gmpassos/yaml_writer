@@ -83,6 +83,28 @@ foo: ''
 '''));
     });
 
+    test("numbers in unquoted string", () {
+      final yamlWriter = YamlWriter(
+        config: YamlWriterConfig(
+          quoteStyle: QuoteStyle.preferSingleQuote,
+        ),
+      );
+
+      final tree = {
+        'foo': "123",
+        'bar': 123,
+      };
+
+      final yaml = yamlWriter.write(tree);
+
+      print(yaml);
+
+      expect(yaml, equals(r'''
+foo: '123'
+bar: 123
+'''));
+    });
+
     test('indent 1', () {
       final yamlWriter = YamlWriter(
         config: YamlWriterConfig(

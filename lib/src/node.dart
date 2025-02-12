@@ -93,7 +93,7 @@ class StringNode extends Node {
   }
 
   static final _invalidCharsRegex = RegExp(
-    r'^[:{}\[\]>,&*#?|@-]|^\s+|\s+$|\n|\t',
+    r'^[:{}\[\]>,&*#?|@-]|^\s+|\s+$|\n|\t|^[0-9]+$',
   );
 
   bool _isValidUnquotedString(String s) => !_invalidCharsRegex.hasMatch(s);
