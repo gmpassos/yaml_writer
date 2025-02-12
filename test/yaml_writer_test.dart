@@ -9,13 +9,13 @@ void main() {
     });
 
     test('unquoted string', () {
-      var yamlWriter = YamlWriter(
+      final yamlWriter = YamlWriter(
         config: YamlWriterConfig(
           allowUnquotedStrings: true,
         ),
       );
 
-      var tree = {
+      final tree = {
         'foo': {
           's1': 'Unquoted string with some@email and a /path/file.',
           's2': 'Unquoted \$string.',
@@ -26,7 +26,7 @@ void main() {
         }
       };
 
-      var yaml = yamlWriter.write(tree);
+      final yaml = yamlWriter.write(tree);
 
       print(yaml);
 
@@ -42,14 +42,14 @@ foo:
 
       expect(yamlWriter.convert(tree), equals(yaml));
 
-      var yamlWriterQuoted = YamlWriter(
+      final yamlWriterQuoted = YamlWriter(
         config: YamlWriterConfig(
           quoteStyle: QuoteStyle.preferSingleQuote,
           allowUnquotedStrings: false,
         ),
       );
 
-      var yaml2 = yamlWriterQuoted.write(tree);
+      final yaml2 = yamlWriterQuoted.write(tree);
 
       print(yaml2);
 
@@ -84,14 +84,14 @@ foo: ''
     });
 
     test('indent 1', () {
-      var yamlWriter = YamlWriter(
+      final yamlWriter = YamlWriter(
         config: YamlWriterConfig(
           indentSize: 1,
           allowUnquotedStrings: false,
         ),
       );
 
-      var tree = {
+      final tree = {
         'foo': {
           's1': 'Some string',
           'bar': {
@@ -100,7 +100,7 @@ foo: ''
         }
       };
 
-      var yaml = yamlWriter.write(tree);
+      final yaml = yamlWriter.write(tree);
 
       print(yaml);
 
@@ -113,20 +113,20 @@ foo:
     });
 
     test('indent 5', () {
-      var yamlWriter = YamlWriter(
+      final yamlWriter = YamlWriter(
         config: YamlWriterConfig(
           indentSize: 5,
           allowUnquotedStrings: false,
         ),
       );
 
-      var tree = {
+      final tree = {
         'foo': {
           's1': 'Some string',
         }
       };
 
-      var yaml = yamlWriter.write(tree);
+      final yaml = yamlWriter.write(tree);
 
       print(yaml);
 
@@ -137,13 +137,13 @@ foo:
     });
 
     test('list', () {
-      var yamlWriter = YamlWriter(
+      final yamlWriter = YamlWriter(
         config: YamlWriterConfig(
           allowUnquotedStrings: false,
         ),
       );
 
-      var tree = [
+      final tree = [
         1,
         10.20,
         true,
@@ -159,7 +159,7 @@ foo:
         """ this string contains both single quote(') and double quote("). """,
       ];
 
-      var yaml = yamlWriter.write(tree);
+      final yaml = yamlWriter.write(tree);
 
       print(yaml);
 
@@ -188,12 +188,12 @@ foo:
     });
 
     test('empty list', () {
-      var yamlWriter = YamlWriter(
+      final yamlWriter = YamlWriter(
           config: YamlWriterConfig(
         allowUnquotedStrings: false,
       ));
 
-      var tree = {
+      final tree = {
         'emptyList': [],
         'objectWithEmptyList': {
           'emptyList': [],
@@ -205,7 +205,7 @@ foo:
         'someValue': 5,
       };
 
-      var yaml = yamlWriter.write(tree);
+      final yaml = yamlWriter.write(tree);
 
       print(yaml);
 
@@ -223,13 +223,13 @@ someValue: 5
     });
 
     test('map', () {
-      var yamlWriter = YamlWriter(
+      final yamlWriter = YamlWriter(
         config: YamlWriterConfig(
           allowUnquotedStrings: false,
         ),
       );
 
-      var yaml = yamlWriter.write({
+      final yaml = yamlWriter.write({
         'a': 1,
         'b': 10.20,
         'c': true,
@@ -268,13 +268,13 @@ l: {}
     });
 
     test('mixed', () {
-      var yamlWriter = YamlWriter(
+      final yamlWriter = YamlWriter(
         config: YamlWriterConfig(
           allowUnquotedStrings: false,
         ),
       );
 
-      var yaml = yamlWriter.write({
+      final yaml = yamlWriter.write({
         'a': [1, 2, 3],
         'b': [10.20, 30.40],
         'c': {'ok': true, 'error': false},
@@ -341,18 +341,18 @@ i:
   });
 
   test('object', () {
-    var yamlWriter = YamlWriter(
+    final yamlWriter = YamlWriter(
       config: YamlWriterConfig(
         allowUnquotedStrings: false,
       ),
     );
 
-    var tree = {
+    final tree = {
       'type': '_Foo',
       'obj': _Foo(id: 123, name: 'Joe'),
     };
 
-    var yaml = yamlWriter.write(tree);
+    final yaml = yamlWriter.write(tree);
 
     print(yaml);
 
@@ -363,14 +363,14 @@ obj:
   name: 'Joe'
 '''));
 
-    var yamlWriter2 = YamlWriter(
+    final yamlWriter2 = YamlWriter(
       config: YamlWriterConfig(
         allowUnquotedStrings: false,
       ),
       toEncodable: (o) => o.name,
     );
 
-    var yaml2 = yamlWriter2.write(tree);
+    final yaml2 = yamlWriter2.write(tree);
 
     print(yaml2);
 
