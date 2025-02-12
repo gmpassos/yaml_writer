@@ -1,7 +1,14 @@
 import 'dart:math';
 
 import 'config.dart';
-import 'yaml_context.dart';
+
+class YamlContext {
+  final YamlWriterConfig config;
+
+  const YamlContext({
+    required this.config,
+  });
+}
 
 sealed class Node {
   bool get requiresNewLine => false;
