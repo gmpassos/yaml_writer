@@ -41,8 +41,10 @@ class StringNode extends Node {
   List<String> toYaml(YamlContext context) {
     List<String> yamlLines = [];
     if (text.isEmpty) {
+      // if the text is empty, use the empty string literal
       yamlLines.add(context.config.emptyStringLiteral.literal);
     } else if (text.contains('\n')) {
+      // if the text is multiline, use the vertical bar
       bool endsWithLineBreak = text.endsWith('\n');
 
       List<String> lines;
@@ -58,17 +60,30 @@ class StringNode extends Node {
         yamlLines.add(lines[index]);
       }
     } else {
-      var containsSingleQuote = text.contains("'");
+      final containsSingleQuote = text.contains("'");
+      final containsDoubleQuote = text.contains('"');
 
-      if (context.config.quoteStyle == QuoteStyle.preferUnquoted &&
-          !containsSingleQuote &&
-          _isValidUnquotedString(text)) {
-        yamlLines.add(text);
-      } else if (!containsSingleQuote) {
-        yamlLines.add('\'$text\'');
+      if (containsSingleQuote && containsDoubleQuote) {
+        // if contains both single and double quote, use folded block scalar
+        final result = text.replaceAll(r'\', r'\\').replaceAll('"', r'\"');
+        yamlLines.add('"$result"');
+      } else if (containsSingleQuote) {
+        // if contains single quote, use double quote
+        yamlLines.add('"$text"');
+      } else if (containsDoubleQuote) {
+        // if contains double quote, use string quote
+        yamlLines.add("'$text'");
       } else {
-        var str = text.replaceAll('\\', '\\\\').replaceAll('"', '\\"');
-        yamlLines.add('"$str"');
+        if (context.config.allowUnquotedStrings &&
+            _isValidUnquotedString(text)) {
+          yamlLines.add(text);
+        } else {
+          if (context.config.quoteStyle == QuoteStyle.preferSingleQuote) {
+            yamlLines.add("'$text'");
+          } else {
+            yamlLines.add('"$text"');
+          }
+        }
       }
     }
 

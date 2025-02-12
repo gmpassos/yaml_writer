@@ -11,7 +11,7 @@ void main() {
     test('unquoted string', () {
       var yamlWriter = YamlWriter(
         config: YamlWriterConfig(
-          quoteStyle: QuoteStyle.preferUnquoted,
+          allowUnquotedStrings: true,
         ),
       );
 
@@ -148,6 +148,7 @@ foo:
         false,
         'l1\nl2\nl3\n',
         'end',
+        """ this string contains both single quote(') and double quote("). """,
       ];
 
       var yaml = yamlWriter.write(tree);
@@ -172,6 +173,7 @@ foo:
   l2
   l3
 - 'end'
+- " this string contains both single quote(') and double quote(\"). "
 '''));
 
       expect(yamlWriter.convert(tree), equals(yaml));
