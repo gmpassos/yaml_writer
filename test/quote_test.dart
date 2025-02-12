@@ -89,8 +89,10 @@ void main() {
     test("colon", () {
       expect(StringNode.isValidUnquotedString(":foo"), equals(true));
       expect(StringNode.isValidUnquotedString(":"), equals(false));
+      expect(StringNode.isValidUnquotedString(": "), equals(false));
       expect(StringNode.isValidUnquotedString("foo:"), equals(true));
       expect(StringNode.isValidUnquotedString("foo:bar"), equals(true));
+      expect(StringNode.isValidUnquotedString("foo: "), equals(false));
       expect(StringNode.isValidUnquotedString("foo: bar"), equals(false));
     });
 
