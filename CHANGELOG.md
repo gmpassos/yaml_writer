@@ -1,3 +1,9 @@
+## 2.1.0
+
+- Refactored string quoting: enhanced the handling of unquoted strings.
+- Resolved an issue where empty strings were not supported when using unquoted strings.
+- Introduced `YamlWriter.config()` as a new constructor, along with the `YamlWriterConfig` class.
+
 ## 2.0.1
 
 - Remove unnecessary trailing spaces from keys with values declared on a new line.
