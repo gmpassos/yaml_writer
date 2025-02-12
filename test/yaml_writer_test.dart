@@ -91,10 +91,11 @@ foo: ''
       );
 
       final tree = {
-        'int-to-string': "123",
+        'int-in-string': "123",
         'int': 123,
-        'double-to-string': "0.18",
-        'double': 0.18,
+        'double-in-string': ".18",
+        'double-in-string2': "0.18",
+        'double': .18,
       };
 
       final yaml = yamlWriter.write(tree);
@@ -102,61 +103,51 @@ foo: ''
       print(yaml);
 
       expect(yaml, equals(r'''
-int-to-string: '123'
+int-in-string: '123'
 int: 123
-double-to-string: '0.18'
+double-in-string: '.18'
+double-in-string2: '0.18'
 double: 0.18
 '''));
     });
 
     test('indent 1', () {
-      final yamlWriter = YamlWriter(
+      final writer1 = YamlWriter(
         config: YamlWriterConfig(
           indentSize: 1,
           allowUnquotedStrings: false,
         ),
       );
-
-      final tree = {
-        'foo': {
-          's1': 'Some string',
-          'bar': {
-            's2': 'Another string',
-          }
-        }
-      };
-
-      final yaml = yamlWriter.write(tree);
-
-      print(yaml);
-
-      expect(yaml, equals(r'''
+      expect(
+          writer1.write({
+            'foo': {
+              's1': 'Some string',
+              'bar': {
+                's2': 'Another string',
+              }
+            }
+          }),
+          equals(r'''
 foo:
  s1: 'Some string'
  bar:
   s2: 'Another string'
 '''));
-    });
 
-    test('indent 5', () {
-      final yamlWriter = YamlWriter(
+      final writer5 = YamlWriter(
         config: YamlWriterConfig(
           indentSize: 5,
           allowUnquotedStrings: false,
         ),
       );
 
-      final tree = {
-        'foo': {
-          's1': 'Some string',
-        }
-      };
-
-      final yaml = yamlWriter.write(tree);
-
-      print(yaml);
-
-      expect(yaml, equals(r'''
+      expect(
+          writer5.write({
+            'foo': {
+              's1': 'Some string',
+            }
+          }),
+          equals(r'''
 foo:
      s1: 'Some string'
 '''));
