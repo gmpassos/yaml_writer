@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:yaml_writer/src/node.dart';
 
 import 'config.dart';
-import 'yaml_context.dart';
 
 @Deprecated('Use YamlWriter.')
 typedef YAMLWriter = YamlWriter;

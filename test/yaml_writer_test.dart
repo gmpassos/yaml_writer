@@ -1,5 +1,4 @@
 import 'package:test/test.dart';
-import 'package:yaml_writer/src/config.dart';
 import 'package:yaml_writer/yaml_writer.dart';
 
 void main() {
