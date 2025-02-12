@@ -17,10 +17,10 @@ class YamlWriter extends Converter<Object?, String> {
   /// Used to convert objects to an encodable version.
   final Object? Function(dynamic object) toEncodable;
 
-  YamlWriter({
+  const YamlWriter({
     this.config = const YamlWriterConfig(),
-    Object? Function(dynamic object)? toEncodable,
-  }) : toEncodable = toEncodable ?? _defaultToEncodable;
+    this.toEncodable = _defaultToEncodable,
+  });
 
   /// Converts [input] to an YAML document as [String].
   ///
