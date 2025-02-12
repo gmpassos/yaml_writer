@@ -24,9 +24,9 @@ A simple usage example:
 import 'package:yaml_writer/yaml_writer.dart';
 
 void main() {
-  var yamlWriter = YAMLWriter();
+  final yamlWriter = const YAMLWriter();
 
-  var yamlDoc = yamlWriter.write({
+  final yamlDoc = yamlWriter.write({
     'name': 'Joe',
     'ids': [10, 20, 30],
     'desc': 'This is\na multiline\ntext',

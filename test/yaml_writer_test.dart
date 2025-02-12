@@ -9,7 +9,7 @@ void main() {
     });
 
     test('unquoted string', () {
-      final yamlWriter = YamlWriter(
+      final yamlWriter = const YamlWriter(
         config: YamlWriterConfig(
           allowUnquotedStrings: true,
         ),
@@ -42,7 +42,7 @@ foo:
 
       expect(yamlWriter.convert(tree), equals(yaml));
 
-      final yamlWriterQuoted = YamlWriter(
+      final yamlWriterQuoted = const YamlWriter(
         config: YamlWriterConfig(
           quoteStyle: QuoteStyle.preferSingleQuote,
           allowUnquotedStrings: false,
@@ -65,7 +65,7 @@ foo:
     });
 
     test("empty string", () {
-      final yamlWriter = YamlWriter(
+      final yamlWriter = const YamlWriter(
         config: YamlWriterConfig(
           quoteStyle: QuoteStyle.preferSingleQuote,
           allowUnquotedStrings: false,
@@ -84,7 +84,7 @@ foo: ''
     });
 
     test("numbers in unquoted string", () {
-      final yamlWriter = YamlWriter(
+      final yamlWriter = const YamlWriter(
         config: YamlWriterConfig(
           quoteStyle: QuoteStyle.preferSingleQuote,
         ),
@@ -112,7 +112,7 @@ double: 0.18
     });
 
     test('indent 1', () {
-      final writer1 = YamlWriter(
+      final writer1 = const YamlWriter(
         config: YamlWriterConfig(
           indentSize: 1,
           allowUnquotedStrings: false,
@@ -134,7 +134,7 @@ foo:
   s2: 'Another string'
 '''));
 
-      final writer5 = YamlWriter(
+      final writer5 = const YamlWriter(
         config: YamlWriterConfig(
           indentSize: 5,
           allowUnquotedStrings: false,
@@ -154,7 +154,7 @@ foo:
     });
 
     test('list', () {
-      final yamlWriter = YamlWriter(
+      final yamlWriter = const YamlWriter(
         config: YamlWriterConfig(
           allowUnquotedStrings: false,
         ),
@@ -205,7 +205,7 @@ foo:
     });
 
     test('empty list', () {
-      final yamlWriter = YamlWriter(
+      final yamlWriter = const YamlWriter(
           config: YamlWriterConfig(
         allowUnquotedStrings: false,
       ));
@@ -240,7 +240,7 @@ someValue: 5
     });
 
     test('map', () {
-      final yamlWriter = YamlWriter(
+      final yamlWriter = const YamlWriter(
         config: YamlWriterConfig(
           allowUnquotedStrings: false,
         ),
@@ -285,7 +285,7 @@ l: {}
     });
 
     test('mixed', () {
-      final yamlWriter = YamlWriter(
+      final yamlWriter = const YamlWriter(
         config: YamlWriterConfig(
           allowUnquotedStrings: false,
         ),
@@ -358,7 +358,7 @@ i:
   });
 
   test('object', () {
-    final yamlWriter = YamlWriter(
+    final yamlWriter = const YamlWriter(
       config: YamlWriterConfig(
         allowUnquotedStrings: false,
       ),
@@ -381,7 +381,7 @@ obj:
 '''));
 
     final yamlWriter2 = YamlWriter(
-      config: YamlWriterConfig(
+      config: const YamlWriterConfig(
         allowUnquotedStrings: false,
       ),
       toEncodable: (o) => o.name,
