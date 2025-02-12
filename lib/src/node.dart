@@ -144,7 +144,7 @@ class StringNode extends Node {
   /// 3. Containing \n, \t, \r is invalid.
   ///
   static final _invalidCharsRegex = RegExp(
-    r"^([?:-])$|^\s+|\s+$|\n|\t|\r|^[{}\[\]>,&*#|@]|^-?(?:\d+(?:\.\d+)?|\.\d+)$|^(- |\? )|:\s|\s+#$",
+    r"^([?:-])$|^\s+|\s+$|\n|\t|\r|^[{}\[\]>,&*#|@]|^-?(?:\d+(?:\.\d+)?|\.\d+)$|^(- |\? )|:\s|\s+#",
   );
 
   static bool isValidUnquotedString(String s) => !_invalidCharsRegex.hasMatch(s);

@@ -103,5 +103,16 @@ void main() {
       expect(StringNode.isValidUnquotedString("foo|"), equals(true));
       expect(StringNode.isValidUnquotedString("foo |"), equals(true));
     });
+
+    test("hash", () {
+      expect(StringNode.isValidUnquotedString("#"), equals(false));
+      expect(StringNode.isValidUnquotedString("#foo"), equals(false));
+      expect(StringNode.isValidUnquotedString("# foo"), equals(false));
+      expect(StringNode.isValidUnquotedString("foo#"), equals(true));
+      expect(StringNode.isValidUnquotedString("foo #"), equals(false));
+      expect(StringNode.isValidUnquotedString("foo #bar"), equals(false));
+      expect(StringNode.isValidUnquotedString("foo # bar"), equals(false));
+      expect(StringNode.isValidUnquotedString("foo# bar"), equals(true));
+    });
   });
 }
