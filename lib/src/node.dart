@@ -98,8 +98,53 @@ class StringNode extends Node {
     return yamlLines;
   }
 
+  /// ## Quoting Rules
+  /// ### Numbers
+  /// 1. Integer and decimals (including negative) are invalid.
+  ///
+  /// ### at sign
+  /// 1. Starting with at sign is invalid.
+  ///
+  /// ### Question mark
+  /// 1. Only a single question mark is invalid.
+  /// 2. Starting with question mark+whitespace is invalid.
+  ///
+  /// ### Dash
+  /// 1. Only a single dash is invalid.
+  /// 2. Starting with dash+whitespace is invalid.
+  ///
+  /// ### Colon
+  /// 1. Only a single colon is invalid.
+  /// 2. Colon+whitespace is invalid.
+  ///
+  /// ### Brackets
+  /// 1. Starting with square brackets is invalid.
+  /// 2. Starting with curly brackets is invalid.
+  /// 3. Starting with angle bracket closing part is invalid.
+  ///
+  /// ### Comma
+  /// 1. Starting with comma is invalid.
+  ///
+  /// ### Ampersand
+  /// 1. Starting with ampersand is invalid.
+  ///
+  /// ### Star
+  /// 1. Starting with star is invalid.
+  ///
+  /// ### Pipe
+  /// 1. Starting with pipe is invalid.
+  ///
+  /// ### Hash
+  /// 1. Starting with hash is invalid.
+  /// 2. Ending with whitespace+hash is invalid.
+  ///
+  /// ### Whitespace
+  /// 1. Starting with one or more whitespace is invalid.
+  /// 2. Ending with one or more whitespace is invalid.
+  /// 3. Containing \n, \t, \r is invalid.
+  ///
   static final _invalidCharsRegex = RegExp(
-    r'^[:{}\[\]>,&*#?|@-]|^\s+|\s+$|\n|\t|^[0-9]+$|^[0-9]*\.[0-9]+$',
+    r"^([?:-])$|^\s+|\s+$|\n|\t|\r|^[{}\[\]>,&*#|@]|^-?(?:\d+(?:\.\d+)?|\.\d+)$|^(- |\? )|:\s|\s+#$",
   );
 
   static bool isValidUnquotedString(String s) => !_invalidCharsRegex.hasMatch(s);
