@@ -6,8 +6,6 @@ enum QuoteStyle {
 enum EmptyStringLiteral {
   singleQuote("''"),
   doubleQuote('""'),
-  literalBlockScalar('|'),
-  foldedBlockScalar('>'),
   ;
 
   final String literal;
