@@ -15,7 +15,7 @@ void main() {
           's1': 'Unquoted string with some@email and a /path/file.',
           's2': 'Unquoted \$string.',
           's3': '@Quoted string.',
-          's4': '-Quoted string.',
+          's4': '-Unquoted string.',
           's5': 'Unquoted@string.',
           's6': 'Unquoted-string.',
         }
@@ -28,7 +28,7 @@ foo:
   s1: Unquoted string with some@email and a /path/file.
   s2: Unquoted $string.
   s3: '@Quoted string.'
-  s4: '-Quoted string.'
+  s4: -Unquoted string.
   s5: Unquoted@string.
   s6: Unquoted-string.
 '''));
@@ -49,7 +49,7 @@ foo:
   s1: 'Unquoted string with some@email and a /path/file.'
   s2: 'Unquoted $string.'
   s3: '@Quoted string.'
-  s4: '-Quoted string.'
+  s4: '-Unquoted string.'
   s5: 'Unquoted@string.'
   s6: 'Unquoted-string.'
 '''));
