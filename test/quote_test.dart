@@ -75,8 +75,11 @@ void main() {
       expect(StringNode.isValidUnquotedString(" foo"), isFalse);
       expect(StringNode.isValidUnquotedString("foo "), isFalse);
       expect(StringNode.isValidUnquotedString("foo\nbar"), isFalse);
+      expect(StringNode.isValidUnquotedString("foo\n"), isFalse);
       expect(StringNode.isValidUnquotedString("foo\rbar"), isFalse);
-      expect(StringNode.isValidUnquotedString("foo\tbar"), isFalse);
+      expect(StringNode.isValidUnquotedString("foo\r"), isFalse);
+      expect(StringNode.isValidUnquotedString("foo\tbar"), isTrue);
+      expect(StringNode.isValidUnquotedString("foo\t"), isFalse);
     });
 
     test("star", () {
@@ -104,7 +107,7 @@ void main() {
       expect(StringNode.isValidUnquotedString(":foo"), isTrue);
       expect(StringNode.isValidUnquotedString(":"), isFalse);
       expect(StringNode.isValidUnquotedString(": "), isFalse);
-      expect(StringNode.isValidUnquotedString("foo:"), isTrue);
+      expect(StringNode.isValidUnquotedString("foo:"), isFalse);
       expect(StringNode.isValidUnquotedString("foo:bar"), isTrue);
       expect(StringNode.isValidUnquotedString("foo: "), isFalse);
       expect(StringNode.isValidUnquotedString("foo: bar"), isFalse);

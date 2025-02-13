@@ -77,7 +77,7 @@ Please file feature requests and bugs at the [issue tracker][tracker].
 
 Graciliano M. Passos: [gmpassos@GitHub](https://github.com/gmpassos).
 
-Liplum: [liplum@Github](https://github.com/liplum)
+Liplum: [liplum@GitHub](https://github.com/liplum)
 
 
 ## License

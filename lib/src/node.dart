@@ -101,7 +101,7 @@ class StringNode extends Node {
   }
 
   static final _invalidCharsRegex = RegExp(
-    r"^(true|false|null|~|\?|:|-)$|^\s+|\s+$|\n|\t|\r|^[{}\[\]>,&*#|@%]|^-?(?:\d+(?:\.\d+)?|\.\d+)$|^(- |\? )|:\s|\s+#",
+    r"^(true|false|null|~|\?|:|-)$|^\s+|\s+$|\n|\r|^[{}\[\]>,&*#|@%]|^-?(?:\d+(?:\.\d+)?|\.\d+)$|^(- |\? )|:\s*$|:\s+\S|\s+#",
   );
 
   /// ## Quoting Rules
@@ -122,6 +122,7 @@ class StringNode extends Node {
   /// ### Colon
   /// 1. Only a single colon is invalid.
   /// 2. Colon+whitespace is invalid.
+  /// 3. Colon+1+whitespace+non-whitespace is invalid.
   ///
   /// ### Brackets
   /// 1. Starting with square brackets is invalid.
