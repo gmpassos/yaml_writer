@@ -71,7 +71,8 @@ class StringNode extends Node {
       final containsDoubleQuote = text.contains('"');
 
       if (containsSingleQuote && containsDoubleQuote) {
-        // if contains both single and double quote, use folded block scalar
+        // if contains both single and double quote, escape the double quote,
+        // and use double quote
         final result = text.replaceAll(r'\', r'\\').replaceAll('"', r'\"');
         yamlLines.add('"$result"');
       } else if (containsSingleQuote) {
@@ -82,10 +83,11 @@ class StringNode extends Node {
         yamlLines.add("'$text'");
       } else {
         if (!context.config.forceQuotedString && isValidUnquotedString(text)) {
-          // if allowUnquotedStrings is true and the string is valid unquoted, use no quote
+          // if forceQuotedString is false and the string is valid unquoted,
+          // don't use any quote
           yamlLines.add(text);
         } else {
-          // otherwise, use the preferred quote style
+          // otherwise, use the preferred quote
           if (context.config.quoteStyle == QuoteStyle.preferSingleQuote) {
             yamlLines.add("'$text'");
           } else {
