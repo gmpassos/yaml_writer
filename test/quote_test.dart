@@ -45,15 +45,29 @@ void main() {
     });
 
     test("brackets", () {
-      expect(StringNode.isValidUnquotedString(r"["), isFalse);
-      expect(StringNode.isValidUnquotedString(r"{"), isFalse);
-      expect(StringNode.isValidUnquotedString(r">"), isFalse);
-      expect(StringNode.isValidUnquotedString(r"[ "), isFalse);
-      expect(StringNode.isValidUnquotedString(r"{ "), isFalse);
-      expect(StringNode.isValidUnquotedString(r"> "), isFalse);
-      expect(StringNode.isValidUnquotedString(r"foo["), isTrue);
-      expect(StringNode.isValidUnquotedString(r"foo{"), isTrue);
-      expect(StringNode.isValidUnquotedString(r"foo>"), isTrue);
+      expect(StringNode.isValidUnquotedString("[foo"), isFalse);
+      expect(StringNode.isValidUnquotedString("["), isFalse);
+      expect(StringNode.isValidUnquotedString("[ foo"), isFalse);
+      expect(StringNode.isValidUnquotedString("foo["), isTrue);
+      expect(StringNode.isValidUnquotedString("foo ["), isTrue);
+
+      expect(StringNode.isValidUnquotedString("{foo"), isFalse);
+      expect(StringNode.isValidUnquotedString("{"), isFalse);
+      expect(StringNode.isValidUnquotedString("{ foo"), isFalse);
+      expect(StringNode.isValidUnquotedString("foo{"), isTrue);
+      expect(StringNode.isValidUnquotedString("foo {"), isTrue);
+
+      expect(StringNode.isValidUnquotedString(">foo"), isFalse);
+      expect(StringNode.isValidUnquotedString(">"), isFalse);
+      expect(StringNode.isValidUnquotedString("> foo"), isFalse);
+      expect(StringNode.isValidUnquotedString("foo>"), isTrue);
+      expect(StringNode.isValidUnquotedString("foo >"), isTrue);
+
+      expect(StringNode.isValidUnquotedString(">-foo"), isFalse);
+      expect(StringNode.isValidUnquotedString(">-"), isFalse);
+      expect(StringNode.isValidUnquotedString(">- foo"), isFalse);
+      expect(StringNode.isValidUnquotedString("foo>-"), isTrue);
+      expect(StringNode.isValidUnquotedString("foo >-"), isTrue);
     });
 
     test("whitespace", () {
@@ -102,6 +116,12 @@ void main() {
       expect(StringNode.isValidUnquotedString("| foo"), isFalse);
       expect(StringNode.isValidUnquotedString("foo|"), isTrue);
       expect(StringNode.isValidUnquotedString("foo |"), isTrue);
+
+      expect(StringNode.isValidUnquotedString("|-foo"), isFalse);
+      expect(StringNode.isValidUnquotedString("|-"), isFalse);
+      expect(StringNode.isValidUnquotedString("|- foo"), isFalse);
+      expect(StringNode.isValidUnquotedString("foo|-"), isTrue);
+      expect(StringNode.isValidUnquotedString("foo |-"), isTrue);
     });
 
     test("hash", () {

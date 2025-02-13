@@ -125,6 +125,7 @@ class StringNode extends Node {
   /// 1. Starting with square brackets is invalid.
   /// 2. Starting with curly brackets is invalid.
   /// 3. Starting with angle bracket closing part is invalid.
+  /// 4. Starting with angle bracket closing part+dash (>-) is invalid.
   ///
   /// ### Comma
   /// 1. Starting with comma is invalid.
@@ -137,6 +138,7 @@ class StringNode extends Node {
   ///
   /// ### Pipe
   /// 1. Starting with pipe is invalid.
+  /// 2. Starting with pipe+dash (|-) is invalid.
   ///
   /// ### Hash
   /// 1. Starting with hash is invalid.
