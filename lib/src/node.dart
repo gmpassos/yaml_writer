@@ -74,8 +74,17 @@ class StringNode extends Node {
       if (containsSingleQuote && containsDoubleQuote) {
         // if contains both single and double quote, escape the double quote,
         // and use double quote
-        final result = text.replaceAll(r'\', r'\\').replaceAll('"', r'\"');
-        yamlLines.add('"$result"');
+        var result = text.replaceAll(r'\', r'\\');
+        switch (context.config.quoteStyle) {
+          case QuoteStyle.preferSingleQuote:
+            result = result.replaceAll("'", "''");
+            yamlLines.add("'$result'");
+            break;
+          case QuoteStyle.preferDoubleQuote:
+            result = result.replaceAll('"', r'\"');
+            yamlLines.add('"$result"');
+            break;
+        }
       } else if (containsSingleQuote) {
         // if contains single quote, use double quote
         yamlLines.add('"$text"');
