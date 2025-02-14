@@ -48,8 +48,9 @@ class StringNode extends Node {
   List<String> toYaml(YamlContext context) {
     List<String> yamlLines = [];
     if (text.isEmpty) {
-      // if the text is empty, use the empty string literal
-      yamlLines.add(context.config.emptyStringLiteral.literal);
+      // if the text is empty, wrap with preferred quotes.
+      final quote = context.config.quoteStyle.char;
+      yamlLines.add("$quote$quote");
     } else if (text.contains('\n')) {
       // if the text is multiline, use the vertical bar
       bool endsWithLineBreak = text.endsWith('\n');
@@ -88,11 +89,8 @@ class StringNode extends Node {
           yamlLines.add(text);
         } else {
           // otherwise, use the preferred quote
-          if (context.config.quoteStyle == QuoteStyle.preferSingleQuote) {
-            yamlLines.add("'$text'");
-          } else {
-            yamlLines.add('"$text"');
-          }
+          final quote = context.config.quoteStyle.char;
+          yamlLines.add("$quote$text$quote");
         }
       }
     }

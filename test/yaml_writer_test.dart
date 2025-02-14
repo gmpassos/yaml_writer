@@ -56,19 +56,23 @@ foo:
     });
 
     test("empty string", () {
-      final yamlWriter = const YamlWriter.config(
+      final singleQuote = const YamlWriter.config(
         config: YamlWriterConfig(
           quoteStyle: QuoteStyle.preferSingleQuote,
           forceQuotedString: true,
         ),
       );
-
-      final tree = {'foo': ""};
-
-      final yaml = yamlWriter.write(tree);
-
-      expect(yaml, equals(r'''
+      expect(singleQuote.write({'foo': ""}), equals(r'''
 foo: ''
+'''));
+      final doubleQuote = const YamlWriter.config(
+        config: YamlWriterConfig(
+          quoteStyle: QuoteStyle.preferDoubleQuote,
+          forceQuotedString: true,
+        ),
+      );
+      expect(doubleQuote.write({'foo': ''}), equals(r'''
+foo: ""
 '''));
     });
 
