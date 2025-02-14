@@ -72,9 +72,9 @@ class StringNode extends Node {
       final containsDoubleQuote = text.contains('"');
 
       if (containsSingleQuote && containsDoubleQuote) {
-        // if contains both single and double quote, escape the double quote,
-        // and use double quote
-        var result = text.replaceAll(r'\', r'\\');
+        // if contains both single and double quote,
+        // escape the preferred quote, and use it
+        var result = text;
         switch (context.config.quoteStyle) {
           case QuoteStyle.preferSingleQuote:
             result = result.replaceAll("'", "''");
