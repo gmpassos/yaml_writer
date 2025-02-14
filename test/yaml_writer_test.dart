@@ -70,6 +70,7 @@ foo:
       final writerPreferSingleQuote = const YamlWriter.config(
         config: YamlWriterConfig(
           quoteStyle: QuoteStyle.preferSingleQuote,
+          forceQuotedString: true,
         ),
       );
 
@@ -87,6 +88,7 @@ foo:
       final writerPreferDoubleQuote = const YamlWriter.config(
         config: YamlWriterConfig(
           quoteStyle: QuoteStyle.preferDoubleQuote,
+          forceQuotedString: true,
         ),
       );
 
@@ -218,7 +220,7 @@ foo:
 - 'x y z'
 - null
 - '"quote"'
-- "it's"
+- 'it''s'
 - '"mixed"''s'
 - |-
   l1
@@ -297,7 +299,7 @@ b: 10.2
 c: true
 d: 'x y z'
 e: '"quote"'
-f: "it's"
+f: 'it''s'
 g: '"mixed"''s'
 h: |-
   l1

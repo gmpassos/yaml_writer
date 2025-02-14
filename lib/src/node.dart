@@ -68,12 +68,11 @@ class StringNode extends Node {
         yamlLines.add(lines[index]);
       }
     } else {
-      final containsSingleQuote = text.contains("'");
-      final containsDoubleQuote = text.contains('"');
-
-      if (containsSingleQuote && containsDoubleQuote) {
-        // if contains both single and double quote,
-        // escape the preferred quote, and use it
+      if (!context.config.forceQuotedString && isValidUnquotedString(text)) {
+        // if forceQuotedString is false and the string is valid unquoted,
+        // don't use any quote
+        yamlLines.add(text);
+      } else {
         var result = text;
         switch (context.config.quoteStyle) {
           case QuoteStyle.preferSingleQuote:
@@ -84,22 +83,6 @@ class StringNode extends Node {
             result = result.replaceAll('"', r'\"');
             yamlLines.add('"$result"');
             break;
-        }
-      } else if (containsSingleQuote) {
-        // if contains single quote, use double quote
-        yamlLines.add('"$text"');
-      } else if (containsDoubleQuote) {
-        // if contains double quote, use string quote
-        yamlLines.add("'$text'");
-      } else {
-        if (!context.config.forceQuotedString && isValidUnquotedString(text)) {
-          // if forceQuotedString is false and the string is valid unquoted,
-          // don't use any quote
-          yamlLines.add(text);
-        } else {
-          // otherwise, use the preferred quote
-          final quote = context.config.quoteStyle.char;
-          yamlLines.add("$quote$text$quote");
         }
       }
     }
