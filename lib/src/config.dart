@@ -1,10 +1,10 @@
 /// Style of quotes to use for string serialization.
 enum QuoteStyle {
-  /// Prefer single quotes: `'value'`.
-  preferSingleQuote("'"),
+  /// example: `'value'`.
+  singleQuote("'"),
 
-  /// Prefer double quotes: `"value"`.
-  preferDoubleQuote('"'),;
+  /// example: `"value"`.
+  doubleQuote('"'),;
   final String char;
 
   const QuoteStyle(this.char);
@@ -27,6 +27,6 @@ class YamlWriterConfig {
   const YamlWriterConfig({
     this.indentSize = 2,
     this.forceQuotedString = false,
-    this.quoteStyle = QuoteStyle.preferSingleQuote,
+    this.quoteStyle = QuoteStyle.singleQuote,
   });
 }

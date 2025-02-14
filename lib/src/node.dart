@@ -48,7 +48,7 @@ class StringNode extends Node {
   List<String> toYaml(YamlContext context) {
     List<String> yamlLines = [];
     if (text.isEmpty) {
-      // if the text is empty, wrap with preferred quotes.
+      // if the text is empty, wrap with quotes.
       final quote = context.config.quoteStyle.char;
       yamlLines.add("$quote$quote");
     } else if (text.contains('\n')) {
@@ -75,11 +75,11 @@ class StringNode extends Node {
       } else {
         var result = text;
         switch (context.config.quoteStyle) {
-          case QuoteStyle.preferSingleQuote:
+          case QuoteStyle.singleQuote:
             result = result.replaceAll("'", "''");
             yamlLines.add("'$result'");
             break;
-          case QuoteStyle.preferDoubleQuote:
+          case QuoteStyle.doubleQuote:
             result = result.replaceAll('"', r'\"');
             yamlLines.add('"$result"');
             break;
