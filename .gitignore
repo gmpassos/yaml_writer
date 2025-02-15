@@ -14,3 +14,9 @@ test/.test_cov.dart
 pubspec.lock
 
 .DS_Store
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/

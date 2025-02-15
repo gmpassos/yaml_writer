@@ -1,9 +1,8 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:yaml_writer/src/node.dart';
 
-import 'yaml_context.dart';
+import 'config.dart';
 
 @Deprecated('Use YamlWriter.')
 typedef YAMLWriter = YamlWriter;
@@ -12,25 +11,36 @@ typedef YAMLWriter = YamlWriter;
 class YamlWriter extends Converter<Object?, String> {
   static dynamic _defaultToEncodable(dynamic object) => object.toJson();
 
-  /// The indentation size.
-  ///
-  /// Must be greater or equal to `1`.
-  ///
-  /// Defaults to `2`.
-  final int indentSize;
-
-  /// If `true` it will allow unquoted strings.
-  final bool allowUnquotedStrings;
+  final YamlWriterConfig config;
 
   /// Used to convert objects to an encodable version.
   final Object? Function(dynamic object) toEncodable;
 
+  /// Creates a [YamlWriter].
+  ///
+  /// [indentSize] controls the indentation size.
+  ///
+  /// If [allowUnquotedStrings] is set, strings are written without quotes if possible.
+  ///
+  /// [toEncodable] is called to encode non-builtin classes.
   YamlWriter({
     int indentSize = 2,
-    this.allowUnquotedStrings = false,
-    Object? Function(dynamic object)? toEncodable,
-  })  : indentSize = max(1, indentSize),
-        toEncodable = toEncodable ?? _defaultToEncodable;
+    bool allowUnquotedStrings = false,
+    this.toEncodable = _defaultToEncodable,
+  }) : config = YamlWriterConfig(
+          indentSize: indentSize,
+          forceQuotedString: !allowUnquotedStrings,
+        );
+
+  /// Creates a [YamlWriter] with the given [config].
+  ///
+  /// See [YamlWriterConfig].
+  ///
+  /// [toEncodable] is called to encode non-builtin classes.
+  YamlWriter.config({
+    this.config = const YamlWriterConfig(),
+    this.toEncodable = _defaultToEncodable,
+  });
 
   /// Converts [input] to an YAML document as [String].
   ///
@@ -44,8 +54,7 @@ class YamlWriter extends Converter<Object?, String> {
   String write(Object? object) {
     final node = _parseNode(object);
     final context = YamlContext(
-      indentSize: indentSize,
-      allowUnquotedStrings: allowUnquotedStrings,
+      config: config,
     );
     final yaml = node.toYaml(context);
     return '${yaml.join('\n')}\n';

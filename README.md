@@ -24,9 +24,9 @@ A simple usage example:
 import 'package:yaml_writer/yaml_writer.dart';
 
 void main() {
-  var yamlWriter = YAMLWriter();
+  final yamlWriter = YamlWriter();
 
-  var yamlDoc = yamlWriter.write({
+  final yamlDoc = yamlWriter.write({
     'name': 'Joe',
     'ids': [10, 20, 30],
     'desc': 'This is\na multiline\ntext',
@@ -75,9 +75,10 @@ Please file feature requests and bugs at the [issue tracker][tracker].
 
 ## Author
 
-Graciliano M. Passos: [gmpassos@GitHub][github].
+Graciliano M. Passos: [gmpassos@GitHub](https://github.com/gmpassos).
 
-[github]: https://github.com/gmpassos
+Liplum: [liplum@GitHub](https://github.com/liplum)
+
 
 ## License
 

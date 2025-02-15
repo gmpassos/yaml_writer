@@ -1,4 +1,5 @@
 /// YAML Writer Library.
-library yaml_writer;
+library;
 
 export 'src/yaml_writer.dart';
+export "src/config.dart";

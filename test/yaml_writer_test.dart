@@ -3,104 +3,202 @@ import 'package:yaml_writer/yaml_writer.dart';
 
 void main() {
   group('YAMLWriter', () {
-    setUp(() {
-      print('---------------------------------------------');
-    });
-
     test('unquoted string', () {
-      var yamlWriter = YamlWriter(allowUnquotedStrings: true);
+      final yamlWriterUnquoted = YamlWriter.config(
+        config: YamlWriterConfig(
+          quoteStyle: QuoteStyle.singleQuote,
+          forceQuotedString: false,
+        ),
+      );
 
-      var tree = {
+      final tree = {
         'foo': {
           's1': 'Unquoted string with some@email and a /path/file.',
-          's2': 'Quoted \$string.',
+          's2': 'Unquoted \$string.',
           's3': '@Quoted string.',
-          's4': '-Quoted string.',
-          's5': 'UnQuoted@string.',
-          's6': 'UnQuoted-string.',
+          's4': '-Unquoted string.',
+          's5': 'Unquoted@string.',
+          's6': 'Unquoted-string.',
         }
       };
 
-      var yaml = yamlWriter.write(tree);
-
-      print(yaml);
-
-      expect(yaml, equals(r'''
+      expect(yamlWriterUnquoted.write(tree), equals(r'''
 foo:
   s1: Unquoted string with some@email and a /path/file.
-  s2: 'Quoted $string.'
+  s2: Unquoted $string.
   s3: '@Quoted string.'
-  s4: '-Quoted string.'
-  s5: UnQuoted@string.
-  s6: UnQuoted-string.
+  s4: -Unquoted string.
+  s5: Unquoted@string.
+  s6: Unquoted-string.
 '''));
 
-      expect(yamlWriter.convert(tree), equals(yaml));
+      final yamlWriterForceQuotedSingle = YamlWriter.config(
+        config: YamlWriterConfig(
+          quoteStyle: QuoteStyle.singleQuote,
+          forceQuotedString: true,
+        ),
+      );
 
-      var yamlWriterQuoted = YamlWriter(allowUnquotedStrings: false);
-
-      var yaml2 = yamlWriterQuoted.write(tree);
-
-      print(yaml2);
-
-      expect(yaml2, equals(r'''
+      expect(yamlWriterForceQuotedSingle.write(tree), equals(r'''
 foo:
   s1: 'Unquoted string with some@email and a /path/file.'
-  s2: 'Quoted $string.'
+  s2: 'Unquoted $string.'
   s3: '@Quoted string.'
-  s4: '-Quoted string.'
-  s5: 'UnQuoted@string.'
-  s6: 'UnQuoted-string.'
+  s4: '-Unquoted string.'
+  s5: 'Unquoted@string.'
+  s6: 'Unquoted-string.'
+'''));
+
+      final yamlWriterForceQuotedDouble = YamlWriter.config(
+        config: YamlWriterConfig(
+          quoteStyle: QuoteStyle.doubleQuote,
+          forceQuotedString: true,
+        ),
+      );
+
+      expect(yamlWriterForceQuotedDouble.write(tree), equals(r'''
+foo:
+  s1: "Unquoted string with some@email and a /path/file."
+  s2: "Unquoted $string."
+  s3: "@Quoted string."
+  s4: "-Unquoted string."
+  s5: "Unquoted@string."
+  s6: "Unquoted-string."
+'''));
+    });
+
+    test("including both single and double quote", () {
+      final writerSingleQuote = YamlWriter.config(
+        config: YamlWriterConfig(
+          quoteStyle: QuoteStyle.singleQuote,
+          forceQuotedString: true,
+        ),
+      );
+
+      final tree = {
+        "foo": {
+          "s1": """Single quote ' and double quote " in string.""",
+        }
+      };
+
+      expect(writerSingleQuote.write(tree), equals("""
+foo:
+  s1: 'Single quote '' and double quote " in string.'
+"""));
+
+      final writerDoubleQuote = YamlWriter.config(
+        config: YamlWriterConfig(
+          quoteStyle: QuoteStyle.doubleQuote,
+          forceQuotedString: true,
+        ),
+      );
+
+      expect(writerDoubleQuote.write(tree), equals("""
+foo:
+  s1: "Single quote ' and double quote \\" in string."
+"""));
+    });
+
+    test("empty string", () {
+      final singleQuote = YamlWriter.config(
+        config: YamlWriterConfig(
+          quoteStyle: QuoteStyle.singleQuote,
+          forceQuotedString: true,
+        ),
+      );
+      expect(singleQuote.write({'foo': ""}), equals(r'''
+foo: ''
+'''));
+      final doubleQuote = YamlWriter.config(
+        config: YamlWriterConfig(
+          quoteStyle: QuoteStyle.doubleQuote,
+          forceQuotedString: true,
+        ),
+      );
+      expect(doubleQuote.write({'foo': ''}), equals(r'''
+foo: ""
+'''));
+    });
+
+    test("numbers in unquoted string", () {
+      final yamlWriter = YamlWriter.config(
+        config: YamlWriterConfig(
+          quoteStyle: QuoteStyle.singleQuote,
+        ),
+      );
+
+      final tree = {
+        'int-in-string': "123",
+        'int': 123,
+        'double-in-string': ".18",
+        'double-in-string2': "0.18",
+        'double': .18,
+      };
+
+      final yaml = yamlWriter.write(tree);
+
+      expect(yaml, equals(r'''
+int-in-string: '123'
+int: 123
+double-in-string: '.18'
+double-in-string2: '0.18'
+double: 0.18
 '''));
     });
 
     test('indent 1', () {
-      var yamlWriter = YamlWriter(indentSize: 1);
-
-      var tree = {
-        'foo': {
-          's1': 'Some string',
-          'bar': {
-            's2': 'Another string',
-          }
-        }
-      };
-
-      var yaml = yamlWriter.write(tree);
-
-      print(yaml);
-
-      expect(yaml, equals(r'''
+      final writer1 = YamlWriter.config(
+        config: YamlWriterConfig(
+          indentSize: 1,
+          quoteStyle: QuoteStyle.singleQuote,
+          forceQuotedString: true,
+        ),
+      );
+      expect(
+          writer1.write({
+            'foo': {
+              's1': 'Some string',
+              'bar': {
+                's2': 'Another string',
+              }
+            }
+          }),
+          equals(r'''
 foo:
  s1: 'Some string'
  bar:
   s2: 'Another string'
 '''));
-    });
 
-    test('indent 5', () {
-      var yamlWriter = YamlWriter(indentSize: 5);
+      final writer5 = YamlWriter.config(
+        config: YamlWriterConfig(
+          indentSize: 5,
+          quoteStyle: QuoteStyle.singleQuote,
+          forceQuotedString: true,
+        ),
+      );
 
-      var tree = {
-        'foo': {
-          's1': 'Some string',
-        }
-      };
-
-      var yaml = yamlWriter.write(tree);
-
-      print(yaml);
-
-      expect(yaml, equals(r'''
+      expect(
+          writer5.write({
+            'foo': {
+              's1': 'Some string',
+            }
+          }),
+          equals(r'''
 foo:
      s1: 'Some string'
 '''));
     });
 
     test('list', () {
-      var yamlWriter = YamlWriter();
+      final yamlWriter = YamlWriter.config(
+        config: YamlWriterConfig(
+          quoteStyle: QuoteStyle.singleQuote,
+          forceQuotedString: true,
+        ),
+      );
 
-      var tree = [
+      final tree = [
         1,
         10.20,
         true,
@@ -113,11 +211,10 @@ foo:
         false,
         'l1\nl2\nl3\n',
         'end',
+        """ this string contains both single quote(') and double quote("). """,
       ];
 
-      var yaml = yamlWriter.write(tree);
-
-      print(yaml);
+      final yaml = yamlWriter.write(tree);
 
       expect(yaml, equals(r'''
 - 1
@@ -126,8 +223,8 @@ foo:
 - 'x y z'
 - null
 - '"quote"'
-- "it's"
-- "\"mixed\"'s"
+- 'it''s'
+- '"mixed"''s'
 - |-
   l1
   l2
@@ -137,15 +234,19 @@ foo:
   l2
   l3
 - 'end'
+- ' this string contains both single quote('') and double quote("). '
 '''));
 
       expect(yamlWriter.convert(tree), equals(yaml));
     });
 
     test('empty list', () {
-      var yamlWriter = YamlWriter();
+      final yamlWriter = YamlWriter.config(
+          config: YamlWriterConfig(
+        forceQuotedString: true,
+      ));
 
-      var tree = {
+      final tree = {
         'emptyList': [],
         'objectWithEmptyList': {
           'emptyList': [],
@@ -157,9 +258,7 @@ foo:
         'someValue': 5,
       };
 
-      var yaml = yamlWriter.write(tree);
-
-      print(yaml);
+      final yaml = yamlWriter.write(tree);
 
       expect(yaml, equals(r'''
 emptyList: []
@@ -175,9 +274,14 @@ someValue: 5
     });
 
     test('map', () {
-      var yamlWriter = YamlWriter();
+      final yamlWriter = YamlWriter.config(
+        config: YamlWriterConfig(
+          quoteStyle: QuoteStyle.singleQuote,
+          forceQuotedString: true,
+        ),
+      );
 
-      var yaml = yamlWriter.write({
+      final yaml = yamlWriter.write({
         'a': 1,
         'b': 10.20,
         'c': true,
@@ -192,16 +296,14 @@ someValue: 5
         'l': {}
       });
 
-      print(yaml);
-
       expect(yaml, equals(r'''
 a: 1
 b: 10.2
 c: true
 d: 'x y z'
 e: '"quote"'
-f: "it's"
-g: "\"mixed\"'s"
+f: 'it''s'
+g: '"mixed"''s'
 h: |-
   l1
   l2
@@ -216,9 +318,13 @@ l: {}
     });
 
     test('mixed', () {
-      var yamlWriter = YamlWriter();
+      final yamlWriter = YamlWriter.config(
+        config: YamlWriterConfig(
+          forceQuotedString: true,
+        ),
+      );
 
-      var yaml = yamlWriter.write({
+      final yaml = yamlWriter.write({
         'a': [1, 2, 3],
         'b': [10.20, 30.40],
         'c': {'ok': true, 'error': false},
@@ -235,8 +341,6 @@ l: {}
           "y": [1, 2, 3]
         }
       });
-
-      print(yaml);
 
       expect(yaml, equals('''
 a:
@@ -285,16 +389,19 @@ i:
   });
 
   test('object', () {
-    var yamlWriter = YamlWriter();
+    final yamlWriter = YamlWriter.config(
+      config: YamlWriterConfig(
+        quoteStyle: QuoteStyle.singleQuote,
+        forceQuotedString: true,
+      ),
+    );
 
-    var tree = {
+    final tree = {
       'type': '_Foo',
       'obj': _Foo(id: 123, name: 'Joe'),
     };
 
-    var yaml = yamlWriter.write(tree);
-
-    print(yaml);
+    final yaml = yamlWriter.write(tree);
 
     expect(yaml, equals(r'''
 type: '_Foo'
@@ -303,13 +410,15 @@ obj:
   name: 'Joe'
 '''));
 
-    var yamlWriter2 = YamlWriter(
+    final yamlWriter2 = YamlWriter.config(
+      config: YamlWriterConfig(
+        forceQuotedString: true,
+        quoteStyle: QuoteStyle.singleQuote,
+      ),
       toEncodable: (o) => o.name,
     );
 
-    var yaml2 = yamlWriter2.write(tree);
-
-    print(yaml2);
+    final yaml2 = yamlWriter2.write(tree);
 
     expect(yaml2, equals(r'''
 type: '_Foo'
