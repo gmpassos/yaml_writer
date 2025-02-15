@@ -1,10 +1,11 @@
 /// Style of quotes to use for string serialization.
 enum QuoteStyle {
-  /// example: `'value'`.
+  /// Example: `'value'`.
   singleQuote("'"),
 
-  /// example: `"value"`.
-  doubleQuote('"'),;
+  /// Example: `"value"`.
+  doubleQuote('"');
+
   final String char;
 
   const QuoteStyle(this.char);
@@ -18,15 +19,17 @@ class YamlWriterConfig {
   /// Defaults to `2`.
   final int indentSize;
 
-  /// If `true`, it will allow unquoted strings.
+  /// The quote to be used for quoting strings.
+  /// Defaults to [QuoteStyle.doubleQuote], because single quotes are often used as apostrophes.
   final QuoteStyle quoteStyle;
 
   /// If `true`, it will force quoting of strings.
+  /// If `false`, strings could be left unquoted if possible.
   final bool forceQuotedString;
 
   const YamlWriterConfig({
     this.indentSize = 2,
+    this.quoteStyle = QuoteStyle.doubleQuote,
     this.forceQuotedString = false,
-    this.quoteStyle = QuoteStyle.singleQuote,
   });
 }

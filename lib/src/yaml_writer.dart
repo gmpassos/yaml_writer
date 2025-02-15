@@ -20,7 +20,7 @@ class YamlWriter extends Converter<Object?, String> {
   ///
   /// [indentSize] controls the indentation size.
   ///
-  /// If [allowUnquotedStrings] is set, strings are written without quotes if it's capable.
+  /// If [allowUnquotedStrings] is set, strings are written without quotes if possible.
   ///
   /// [toEncodable] is called to encode non-builtin classes.
   YamlWriter({
