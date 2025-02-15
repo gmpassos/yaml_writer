@@ -1,7 +1,7 @@
 import 'package:yaml_writer/yaml_writer.dart';
 
 void main() {
-  const yamlWriter = YamlWriter.config();
+  final yamlWriter = YamlWriter.config();
 
   final yamlDoc = yamlWriter.write({
     'name': 'Joe',
