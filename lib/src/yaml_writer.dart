@@ -37,7 +37,7 @@ class YamlWriter extends Converter<Object?, String> {
   /// See [YamlWriterConfig].
   ///
   /// [toEncodable] is called to encode non-builtin classes.
-  const YamlWriter.config({
+  YamlWriter.config({
     this.config = const YamlWriterConfig(),
     this.toEncodable = _defaultToEncodable,
   });
