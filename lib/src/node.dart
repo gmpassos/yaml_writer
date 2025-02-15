@@ -80,7 +80,7 @@ class StringNode extends Node {
             yamlLines.add("'$result'");
             break;
           case QuoteStyle.doubleQuote:
-            result = result.replaceAll('"', r'\"');
+            result = result.replaceAll(r'\', r'\\').replaceAll('"', r'\"');
             yamlLines.add('"$result"');
             break;
         }
