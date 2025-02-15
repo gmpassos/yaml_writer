@@ -40,7 +40,7 @@ void main() {
 OUTPUT:
 
 ```text
-name: 'Joe'
+name: Joe
 ids: 
   - 10
   - 20
